@@ -66,8 +66,12 @@ public class Pokemon
     {
         // critical hit
         float critical = 1f;
-        if (Random.value * 100f <= 6.25f)
+        float randomValue = Random.value * 100f;
+        Debug.Log("Random value from critical hit: " + randomValue);
+        if (randomValue <= 6.25f)
+        {
             critical = 2f;
+        }
 
         // take into account typechart values
         float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
@@ -76,14 +80,15 @@ public class Pokemon
         {
             TypeEffectiveness = type,
             Critical = critical,
-            Fainted = false,
+            Fainted = false
         };
 
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * ((float)attacker.Attack / Defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
-
+        Debug.Log("Damage dealt: " + damage);
+        
         HP -= damage;
         if (HP <= 0)
         {
