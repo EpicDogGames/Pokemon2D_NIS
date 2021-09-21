@@ -74,4 +74,12 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
     }
+
+    public void PlaySwitchAnimation()
+    {
+        if (isPlayerUnit)
+            image.transform.localPosition = new Vector3(originalPos.x, originalPos.y);
+
+        image.transform.DOLocalMoveX(originalPos.x-500f, 1f);
+    }
 }

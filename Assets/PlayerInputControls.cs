@@ -29,7 +29,7 @@ public class @PlayerInputControls : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""WASD"",
                     ""id"": ""b54413f0-6c6a-4974-a19f-0e0ac39433f6"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
@@ -82,6 +82,17 @@ public class @PlayerInputControls : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec403097-133b-4d32-a741-ea86a7284434"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
