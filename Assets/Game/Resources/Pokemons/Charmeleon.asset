@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5e73bfc01de224f86c4dad3e6335c3, type: 3}
-  m_Name: Bulbasaur
+  m_Name: Charmeleon
   m_EditorClassIdentifier: 
-  name: Bulbasaur
+  name: Charmeleon
   description: 
-  frontSprite: {fileID: 21300000, guid: b3a1e0ecae5e05a4c825fee4d9f8a40d, type: 3}
-  backSprite: {fileID: 21300000, guid: 39a8db8af8869d44492815267422e816, type: 3}
-  type1: 5
-  type2: 8
-  maxHp: 45
-  attack: 49
-  defense: 49
+  frontSprite: {fileID: 21300000, guid: d648b5e4d9873714aa5200295e4dfe52, type: 3}
+  backSprite: {fileID: 21300000, guid: ee036ff879af7a94b8589f93b570ba75, type: 3}
+  type1: 2
+  type2: 0
+  maxHp: 58
+  attack: 64
+  defense: 58
   spAttack: 65
   spDefense: 65
-  speed: 45
+  speed: 80
   learnableMoves:
-  - moveBase: {fileID: 11400000, guid: f929e6cd7b685a5488f4acb48a9d0de3, type: 2}
+  - moveBase: {fileID: 11400000, guid: a396ee010a333b14e99aa204881182c6, type: 2}
     level: 1
+  - moveBase: {fileID: 11400000, guid: cd82af389629e5f41a97c0b548fe73b9, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: a1134c3c32c18354a81580474d719b1c, type: 2}
+    level: 7
   - moveBase: {fileID: 11400000, guid: c47cb7d6bf131f14f811012f6482e008, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: ba1660bf04f7aae41aa987a8999fcb7e, type: 2}
-    level: 3
-  - moveBase: {fileID: 11400000, guid: 8768c4887c8521e4bb3d37a28a15e07e, type: 2}
-    level: 5

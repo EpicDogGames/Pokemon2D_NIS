@@ -10,26 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5e73bfc01de224f86c4dad3e6335c3, type: 3}
-  m_Name: Bulbasaur
+  m_Name: Ivysaur
   m_EditorClassIdentifier: 
-  name: Bulbasaur
+  name: Ivysaur
   description: 
-  frontSprite: {fileID: 21300000, guid: b3a1e0ecae5e05a4c825fee4d9f8a40d, type: 3}
-  backSprite: {fileID: 21300000, guid: 39a8db8af8869d44492815267422e816, type: 3}
+  frontSprite: {fileID: 21300000, guid: ba6f0f3ed7b163348b67442c6b1eb5b7, type: 3}
+  backSprite: {fileID: 21300000, guid: 5752c3e3ba611524fa99ed8cd04d2571, type: 3}
   type1: 5
   type2: 8
-  maxHp: 45
-  attack: 49
-  defense: 49
-  spAttack: 65
-  spDefense: 65
-  speed: 45
+  maxHp: 60
+  attack: 62
+  defense: 63
+  spAttack: 80
+  spDefense: 80
+  speed: 60
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: f929e6cd7b685a5488f4acb48a9d0de3, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: c47cb7d6bf131f14f811012f6482e008, type: 2}
-    level: 1
   - moveBase: {fileID: 11400000, guid: ba1660bf04f7aae41aa987a8999fcb7e, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: d1848d4912ee75d4287e4ee232312125, type: 2}
     level: 3
-  - moveBase: {fileID: 11400000, guid: 8768c4887c8521e4bb3d37a28a15e07e, type: 2}
-    level: 5
