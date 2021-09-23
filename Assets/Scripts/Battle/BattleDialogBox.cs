@@ -13,12 +13,18 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] GameObject moveDetails;
 
     [SerializeField] List<Text> actionTexts;
+    [SerializeField] List<Image> actionImages;
     [SerializeField] List<Text> moveTexts;
+    [SerializeField] List<Image> moveImages;
 
     [SerializeField] Text ppText;
     [SerializeField] Text typeText;
 
     [SerializeField] Color highlightedColor;
+    [SerializeField] Color selectedTextColor;
+    [SerializeField] Color selectedImageColor;
+    [SerializeField] Color unselectedTextColor;
+    [SerializeField] Color unselectedImageColor;
 
     public void SetDialog(string dialog)
     {
@@ -47,11 +53,13 @@ public class BattleDialogBox : MonoBehaviour
         {
             if (i == selectedAction)
             {
-                actionTexts[i].color = highlightedColor;
+                actionTexts[i].color = selectedTextColor;
+                actionImages[i].color = selectedImageColor;
             }
             else
             {
-                actionTexts[i].color = Color.black;
+                actionTexts[i].color = unselectedTextColor;
+                actionImages[i].color = unselectedImageColor;
             }
         }
     }
@@ -62,11 +70,13 @@ public class BattleDialogBox : MonoBehaviour
         {
             if (i == selectedMove)
             {
-                moveTexts[i].color = highlightedColor;
+                moveTexts[i].color = selectedTextColor;
+                moveImages[i].color = selectedImageColor;
             }
             else
             {
-                moveTexts[i].color = Color.black;
+                moveTexts[i].color = unselectedTextColor;
+                moveImages[i].color = unselectedImageColor;
             }
         }
 
