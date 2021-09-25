@@ -10,26 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5e73bfc01de224f86c4dad3e6335c3, type: 3}
-  m_Name: Bulbasaur
+  m_Name: Butterfree
   m_EditorClassIdentifier: 
-  name: Bulbasaur
+  name: Butterfree
   description: 
-  frontSprite: {fileID: 21300000, guid: ca599ffe955bfbb49a7111daa9918765, type: 3}
-  backSprite: {fileID: 21300000, guid: a98c355ff059bf64ab721703e2505ee2, type: 3}
-  type1: 5
-  type2: 8
-  maxHp: 45
-  attack: 49
-  defense: 49
-  spAttack: 65
-  spDefense: 65
-  speed: 45
+  frontSprite: {fileID: 21300000, guid: 0def22a38d3290b40b603899c00b22f8, type: 3}
+  backSprite: {fileID: 21300000, guid: 71f0b0048fe6cfe4fb7137feff075335, type: 3}
+  type1: 12
+  type2: 10
+  maxHp: 60
+  attack: 45
+  defense: 50
+  spAttack: 80
+  spDefense: 80
+  speed: 70
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: f929e6cd7b685a5488f4acb48a9d0de3, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: c47cb7d6bf131f14f811012f6482e008, type: 2}
-    level: 1
-  - moveBase: {fileID: 11400000, guid: ba1660bf04f7aae41aa987a8999fcb7e, type: 2}
-    level: 3
   - moveBase: {fileID: 11400000, guid: 30e8e053be621c14eaad0d966011059d, type: 2}
     level: 10

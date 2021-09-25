@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8554a443e9ee03429c16b7c8fb85128, type: 3}
-  m_Name: Smokescreen
+  m_Name: PoisonPowder
   m_EditorClassIdentifier: 
-  name: Smokescreen
+  name: Poison Powder
   description: 
-  type: 0
+  type: 8
   power: 0
-  accuracy: 100
-  pp: 29
+  accuracy: 75
+  pp: 35
   category: 2
   effects:
     boosts: []
-    status: 2
+    status: 1
   target: 0
