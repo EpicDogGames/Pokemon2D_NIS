@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,9 +29,13 @@ public class Pokemon
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Condition Status { get; private set; }
     public int StatusTime { get; set; }
+    public Condition VolatileStatus { get; set; }
+    public int VolatileStatusTime { get; set; }
 
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
+
+    public event Action OnStatusChanged;
 
     public void Init()
     {
@@ -48,6 +53,8 @@ public class Pokemon
         HP = MaxHp;
 
         ResetStatBoost();
+        Status = null;
+        VolatileStatus = null;
     }
 
     private void CalculateStats()
@@ -59,7 +66,7 @@ public class Pokemon
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
 
-        MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10;
+        MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10 + Level;
     }
 
     private void ResetStatBoost()
@@ -139,7 +146,7 @@ public class Pokemon
     {
         // critical hit
         float critical = 1f;
-        float randomValue = Random.value * 100f;
+        float randomValue = UnityEngine.Random.value * 100f;
         Debug.Log("Random value from critical hit: " + randomValue);
         if (randomValue <= 6.25f)
         {
@@ -159,7 +166,7 @@ public class Pokemon
         float attack = (move.Base.Category == MoveCategory.Special) ? attacker.SpAttack : attacker.Attack;
         float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
 
-        float modifiers = Random.Range(0.85f, 1f) * type * critical;
+        float modifiers = UnityEngine.Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * ((float)attack / defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
@@ -178,39 +185,69 @@ public class Pokemon
 
     public void SetStatus(ConditionID conditionId)
     {
+        if (Status != null)  return;
+
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+        OnStatusChanged?.Invoke();      // use the ? so it doesnt get invoked unless there is a change
+    }
+
+    public void SetVolatileStatus(ConditionID conditionId)
+    {
+        if (VolatileStatus != null)  return;
+
+        VolatileStatus = ConditionsDB.Conditions[conditionId];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
     }
 
     public void CureStatus()
     {
         Status = null;
+        OnStatusChanged?.Invoke();
     }
+
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
+    }    
 
     public Move GetRandomMove()
     {
-        int r = Random.Range(0, Moves.Count);
+        int r = UnityEngine.Random.Range(0, Moves.Count);
         return Moves[r];
     }
 
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
+
         if (Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (!Status.OnBeforeMove(this))
+                canPerformMove = false;
         }
-        return true;
+
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (!VolatileStatus.OnBeforeMove(this))
+                canPerformMove = false;
+        }
+
+        return canPerformMove;
     }
 
     public void OnAfterTurn()
     {
         // will only call interaction after turn if it isn't null
         Status?.OnAfterTurn?.Invoke(this);
+        VolatileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoost();
     }
 }
