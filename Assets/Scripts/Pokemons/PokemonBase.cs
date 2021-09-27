@@ -179,5 +179,8 @@ public enum Stat
     Defense,
     SpAttack,
     SpDefense,
-    Speed
+    Speed,
+    // these are not actual stats .. they just modify moveAccuracy
+    Accuracy,
+    Evasion
 }

@@ -10,24 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8554a443e9ee03429c16b7c8fb85128, type: 3}
-  m_Name: Ember
+  m_Name: SandAttack
   m_EditorClassIdentifier: 
-  name: Ember
-  description: "\t"
-  type: 2
-  power: 40
+  name: Sand Attack
+  description: 
+  type: 1
+  power: 0
   accuracy: 100
   alwaysHits: 0
-  pp: 25
-  category: 1
+  pp: 40
+  category: 2
   effects:
-    boosts: []
+    boosts:
+    - stat: 5
+      boost: -1
     status: 0
     volatileStatus: 0
-  secondaryEffects:
-  - boosts: []
-    status: 2
-    volatileStatus: 0
-    chance: 10
-    target: 0
+  secondaryEffects: []
   target: 0
