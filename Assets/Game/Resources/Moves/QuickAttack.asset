@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8554a443e9ee03429c16b7c8fb85128, type: 3}
-  m_Name: Tackle
+  m_Name: QuickAttack
   m_EditorClassIdentifier: 
-  name: Tackle
+  name: Quick Attack
   description: 
   type: 1
   power: 40
   accuracy: 100
   alwaysHits: 0
-  pp: 30
-  priority: 0
+  pp: 35
+  priority: 1
   category: 0
   effects:
     boosts: []
