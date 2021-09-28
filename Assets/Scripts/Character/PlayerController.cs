@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,8 +66,6 @@ public class PlayerController : MonoBehaviour
     {
         var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
         var interactPos = transform.position + facingDir;
-
-        //Debug.DrawLine(transform.position, interactPos, Color.red, 0.5f);
 
         // set up a collider to find out if an npc is there 
         // the ? prevents crashes due to nulls
