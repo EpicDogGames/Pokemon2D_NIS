@@ -16,14 +16,14 @@ public class PlayerController : MonoBehaviour
     public bool isMoving;
     private Vector2 movementInput;
 
-    private Animator animator;
+    private CharacterAnimator animator;
 
     // input actions
     PlayerInputControls inputControls;
 
     private void Awake() 
     {
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<CharacterAnimator>(); 
         inputControls = new PlayerInputControls();
         inputControls.PlayerControls.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();   
     }
@@ -40,8 +40,8 @@ public class PlayerController : MonoBehaviour
 
             if (movementInput != Vector2.zero)
             {
-                animator.SetFloat("moveX", h);
-                animator.SetFloat("moveY", v);
+                animator.MoveX = h;
+                animator.MoveY = v;
 
                 var targetPos = transform.position;
                 targetPos.x += h;
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        animator.SetBool("isMoving", isMoving);
+        animator.IsMoving = isMoving;
 
         if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
         {
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
     private void Interact()
     {
-        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var facingDir = new Vector3(animator.MoveX, animator.MoveY);
         var interactPos = transform.position + facingDir;
 
         // set up a collider to find out if an npc is there 
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                animator.SetBool("isMoving", false);
+                animator.IsMoving = false;
                 OnEncountered();
             }
         }
