@@ -12,8 +12,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float lettersPerSecond;
 
     Dialogue dialogue;
+    Action OnDialogueFinished;
+
     int currentLine = 0;
     bool isTyping;
+
+    public bool IsShowing { get; private set; }
 
     public event Action OnShowDialogue;
     public event Action OnCloseDialogue;
@@ -25,13 +29,16 @@ public class DialogueManager : MonoBehaviour
         Instance = this;    
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue)
+    public IEnumerator ShowDialogue(Dialogue dialogue, Action OnFinished=null)
     {
         yield return new WaitForEndOfFrame();
 
         OnShowDialogue?.Invoke();
 
+        IsShowing = true;
         this.dialogue = dialogue;
+        OnDialogueFinished = OnFinished;
+
         dialogueBox.SetActive(true);
         StartCoroutine(TypeDialogue(dialogue.Lines[0]));
     }
@@ -48,7 +55,9 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 currentLine = 0;
+                IsShowing = false;
                 dialogueBox.SetActive(false);
+                OnDialogueFinished?.Invoke();
                 OnCloseDialogue?.Invoke();
             }
         }
