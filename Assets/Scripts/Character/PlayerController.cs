@@ -6,7 +6,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] string name;
+    [SerializeField] Sprite sprite;
+
     public event Action OnEncountered;
+    public event Action<Collider2D> OnEnterTrainersView;
 
     private Vector2 movementInput;
 
@@ -34,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
             if (movementInput != Vector2.zero)
             {
-                StartCoroutine(character.Move(movementInput, CheckForEncounters));
+                StartCoroutine(character.Move(movementInput, OnMoveOver));
             }
         }
 
@@ -56,7 +60,8 @@ public class PlayerController : MonoBehaviour
         var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.Instance.InteractableLayer);
         if (collider != null)
         {
-            collider.GetComponent<NPCController>()?.Interact(transform);
+            //collider.GetComponent<NPCController>()?.Interact(transform);
+            collider.GetComponent<Interactable>()?.Interact(transform);
         }
     }
 
@@ -69,6 +74,12 @@ public class PlayerController : MonoBehaviour
     {
         inputControls.Disable();    
     }
+  
+    private void OnMoveOver()
+    {
+        CheckForEncounters();
+        CheckIfInTrainersView();
+    }
 
     private void CheckForEncounters()
     {
@@ -80,5 +91,24 @@ public class PlayerController : MonoBehaviour
                 OnEncountered();
             }
         }
+    }
+    
+    private void CheckIfInTrainersView()
+    {
+        var collider = Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.Instance.FovLayer);
+
+        if (collider != null)
+        {
+            character.Animator.IsMoving = false;
+            OnEnterTrainersView?.Invoke(collider);    
+        }
+    }
+
+    public string Name {
+        get => name;
+    }
+
+    public Sprite Sprite {
+        get => sprite;
     }
 }
