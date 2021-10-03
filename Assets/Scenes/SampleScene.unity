@@ -1906,7 +1906,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wildPokemons:
-  - _base: {fileID: 11400000, guid: 2f440d59934f5484fadcad99af5812f2, type: 2}
+  - _base: {fileID: 11400000, guid: a542220715d91b54d9c3b5e872bdcc46, type: 2}
     level: 8
 --- !u!1 &468385308
 GameObject:
@@ -9112,7 +9112,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1827839287
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &1038453662
@@ -12166,6 +12166,8 @@ MonoBehaviour:
   partyScreen: {fileID: 630722497}
   playerImage: {fileID: 1770726446}
   trainerImage: {fileID: 1418920276}
+  pokeballSprite: {fileID: 5252106463323484064, guid: 8d335a90e97b8724b8523cf32ca826ef,
+    type: 3}
 --- !u!4 &2018243015
 Transform:
   m_ObjectHideFlags: 0
