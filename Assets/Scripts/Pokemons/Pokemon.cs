@@ -33,6 +33,7 @@ public class Pokemon
 
     public int HP { get; set; }
 
+    public int Exp { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
@@ -58,6 +59,8 @@ public class Pokemon
             if (Moves.Count >= 4)
                 break;
         }
+
+        Exp = Base.GetExpForLevel(Level);
 
         CalculateStats();
         HP = MaxHp;
@@ -129,6 +132,16 @@ public class Pokemon
     }
 
     public int MaxHp { get; set; }
+
+    public bool CheckForLevelUp()
+    {
+        if (Exp > Base.GetExpForLevel(level + 1))
+        {
+            ++level;
+            return true;
+        }  
+        return false;
+    }
 
     public int Attack 
     {

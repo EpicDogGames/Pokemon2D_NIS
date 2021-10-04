@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class BattleHUD : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] Text lvlText;
     [SerializeField] Text statusText;
     [SerializeField] HPBar hpBar;
+    [SerializeField] GameObject expBar;
 
     [SerializeField] Color psnColor;
     [SerializeField] Color brnColor;
@@ -24,8 +26,9 @@ public class BattleHUD : MonoBehaviour
         _pokemon = pokemon;
 
         nameText.text = pokemon.Base.Name;
-        lvlText.text = "Lvl " + pokemon.Level;
+        SetLevel();
         hpBar.SetHP((float) pokemon.HP / pokemon.MaxHp); 
+        SetExp();
 
         statusColors = new Dictionary<ConditionID, Color>()
         {
@@ -51,6 +54,11 @@ public class BattleHUD : MonoBehaviour
         }
     }
 
+    public void SetLevel()
+    {
+        lvlText.text = "Lvl " + _pokemon.Level;        
+    }
+
     public IEnumerator UpdateHP()
     {
         if (_pokemon.HpChanged)
@@ -58,5 +66,35 @@ public class BattleHUD : MonoBehaviour
             yield return hpBar.SetHPSmooth((float)_pokemon.HP / _pokemon.MaxHp);
             _pokemon.HpChanged = false;
         }
+    }
+
+    public void SetExp()
+    {
+        if (expBar == null)  return;
+
+        float normalizedExp = GetNormalizedExp();
+        expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
+    }
+
+    public IEnumerator SetExpSmooth(bool reset=false)
+    {
+        if (expBar == null)  yield break;
+
+        if (reset) 
+        {
+            expBar.transform.localScale = new Vector3(0, 1, 1);    
+        }
+
+        float normalizedExp = GetNormalizedExp();
+        yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
+    }
+        
+    private float GetNormalizedExp()
+    {
+        int currentLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level);
+        int nextLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level + 1);
+
+        float normalizedExp = (float)(_pokemon.Exp - currentLevelExp) / (nextLevelExp - currentLevelExp);   
+        return Mathf.Clamp01(normalizedExp);
     }
 }

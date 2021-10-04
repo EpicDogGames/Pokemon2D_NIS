@@ -43,6 +43,8 @@ public class BattleSystem : MonoBehaviour
         this.playerParty = playerParty;
         this.wildPokemon = wildPokemon;
         player = playerParty.GetComponent<PlayerController>();
+        isTrainerBattle = false;
+        
         StartCoroutine(SetupBattle());    
     }
 
@@ -485,14 +487,9 @@ public class BattleSystem : MonoBehaviour
                 }
             }
 
-
             if (targetUnit.Pokemon.HP <= 0)
             {
-               yield return dialogBox.TypeDialog($"{targetUnit.Pokemon.Base.Name} Fainted");
-                targetUnit.PlayFaintAnimation();
-                yield return new WaitForSeconds(2f);
-
-                CheckForBattleOver(targetUnit);
+                yield return HandlePokemonFainted(targetUnit);
             } 
         }
         else
@@ -514,11 +511,7 @@ public class BattleSystem : MonoBehaviour
         yield return sourceUnit.HUD.UpdateHP();
         if (sourceUnit.Pokemon.HP <= 0)
         {
-            yield return dialogBox.TypeDialog($"{sourceUnit.Pokemon.Base.Name} Fainted");
-            sourceUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(sourceUnit);
+            yield return HandlePokemonFainted(sourceUnit);
             yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
@@ -604,6 +597,39 @@ public class BattleSystem : MonoBehaviour
             var message = pokemon.StatusChanges.Dequeue();
             yield return dialogBox.TypeDialog(message);
         }
+    }
+
+    private IEnumerator HandlePokemonFainted(BattleUnit faintedUnit)
+    {
+        yield return dialogBox.TypeDialog($"{faintedUnit.Pokemon.Base.Name} Fainted");
+        faintedUnit.PlayFaintAnimation();
+        yield return new WaitForSeconds(2f);
+
+        if (!faintedUnit.IsPlayerUnit)
+        {
+            // exp gained
+            int expYield = faintedUnit.Pokemon.Base.ExpYield;
+            int enemyLevel = faintedUnit.Pokemon.Level;
+            float trainerBonus = (isTrainerBattle) ? 1.5f : 1f;
+
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel ) * trainerBonus) / 7;
+            playerUnit.Pokemon.Exp += expGain;
+            yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} gained {expGain} exp");
+            yield return playerUnit.HUD.SetExpSmooth();
+
+            // check level up
+            while (playerUnit.Pokemon.CheckForLevelUp())
+            {
+                playerUnit.HUD.SetLevel();
+                yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} grew to level {playerUnit.Pokemon.Level}");
+
+                yield return playerUnit.HUD.SetExpSmooth(true);
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        CheckForBattleOver(faintedUnit);
     }
 
     private IEnumerator ThrowPokeball()
