@@ -7,11 +7,23 @@ public class Character : MonoBehaviour
 {
     public float moveSpeed;
     public bool IsMoving { get; private set; }
+    public float OffsetY { get; private set; } = 0.3f;
+
     CharacterAnimator animator;
 
     private void Awake() 
     {
         animator = GetComponent<CharacterAnimator>();
+        SetPositionAndSnapToTile(transform.position);
+    }
+
+    public void SetPositionAndSnapToTile(Vector2 pos)
+    {
+        // 2.3 -> Floor -> 2 -> 2.5  ... places it in the center of the tile
+        pos.x = Mathf.Floor(pos.x) + 0.5f;
+        pos.y = Mathf.Floor(pos.y) + 0.5f + OffsetY;
+
+        transform.position = pos;
     }
 
     public CharacterAnimator Animator {

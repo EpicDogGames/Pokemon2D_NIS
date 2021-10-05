@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Cutscene }
+public enum GameState { FreeRoam, Battle, Dialogue, Cutscene, Paused }
 
 public class GameController : MonoBehaviour
 {
@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
 
     GameState state;
+
+    GameState stateBeforePause;
 
     TrainerController trainer;
 
@@ -24,18 +26,7 @@ public class GameController : MonoBehaviour
 
     private void Start() 
     {
-        playerController.OnEncountered += StartBattle; 
         battleSystem.OnBattleOver += EndBattle;
-
-        playerController.OnEnterTrainersView += (Collider2D trainerCollider) =>
-        {
-            var trainer = trainerCollider.GetComponentInParent<TrainerController>();
-            if (trainer != null)
-            {
-                state = GameState.Cutscene;
-                StartCoroutine(trainer.TriggerTrainerBattle(playerController));
-            }
-        };
 
         DialogueManager.Instance.OnShowDialogue += () =>
         {
@@ -65,7 +56,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void StartBattle()
+    public void StartBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);  
@@ -90,6 +81,23 @@ public class GameController : MonoBehaviour
         var trainerParty = trainer.GetComponent<PokemonParty>();
 
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
+    }
+
+    public void OnEnterTrainersView(TrainerController trainer)
+    {
+        state = GameState.Cutscene;
+        StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+    }
+
+    public void PauseGame(bool pause)
+    {
+        if (pause) 
+        {
+            stateBeforePause = state;
+            state = GameState.Paused;
+        }
+        else
+            state = stateBeforePause;
     }
 
     private void EndBattle(bool won) 
