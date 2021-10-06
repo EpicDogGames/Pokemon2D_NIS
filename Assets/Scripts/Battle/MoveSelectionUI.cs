@@ -29,18 +29,39 @@ public class MoveSelectionUI : MonoBehaviour
 
     public void HandleMoveSelection(Action<int> onSelected)
     {
-        if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-            ++currentSelection;
-        else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-            --currentSelection;
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
+        {
+            if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
+                ++currentSelection;
+            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                --currentSelection;
+        }
+        else
+        {
+            if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
+                ++currentSelection;
+            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
+                --currentSelection;            
+        }
 
         currentSelection = Mathf.Clamp(currentSelection, 0, PokemonBase.MaxNumOfMoves);
 
         UpdateMoveSelection(currentSelection);
 
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        if (gamepadConnected)
         {
-            onSelected?.Invoke(currentSelection);
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+            {
+                onSelected?.Invoke(currentSelection);
+            }
+        }
+        else
+        {
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
+            {
+                onSelected?.Invoke(currentSelection);
+            }
         }
     }
 

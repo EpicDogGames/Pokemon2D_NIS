@@ -135,160 +135,333 @@ public class BattleSystem : MonoBehaviour
 
     private void HandleActionSelection()
     {
-        if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
-            ++currentAction;
-        else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
-            --currentAction;
-        else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-            currentAction += 2;
-        else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-            currentAction -= 2;
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
+        {
+            if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
+                ++currentAction;
+            else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
+                --currentAction;
+            else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
+                currentAction += 2;
+            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                currentAction -= 2;
+        }
+        else
+        {
+            if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
+                ++currentAction;
+            else if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
+                --currentAction;
+            else if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
+                currentAction += 2;
+            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
+                currentAction -= 2;            
+        }
 
         currentAction = Mathf.Clamp(currentAction, 0, 3);
 
         dialogBox.UpdateActionSelection(currentAction);
 
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        if (gamepadConnected)
         {
-            if (currentAction == 0)
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
             {
-                MoveSelection();    // fight
+                if (currentAction == 0)
+                {
+                    MoveSelection();    // fight
+                }
+                else if (currentAction == 1)
+                { 
+                    StartCoroutine(RunTurns(BattleAction.UseItem));  // bag
+                }
+                else if (currentAction == 2)
+                {
+                    prevState = state;
+                    OpenPartyScreen();  // pokemon
+                }
+                else if (currentAction == 3)
+                { 
+                    StartCoroutine(RunTurns(BattleAction.Run));
+                } // run
             }
-            else if (currentAction == 1)
-            { 
-                StartCoroutine(RunTurns(BattleAction.UseItem));  // bag
-            }
-            else if (currentAction == 2)
+        }
+        else
+        {
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
             {
-                prevState = state;
-                OpenPartyScreen();  // pokemon
-            }
-            else if (currentAction == 3)
-            { 
-                StartCoroutine(RunTurns(BattleAction.Run));
-            } // run
+                if (currentAction == 0)
+                {
+                    MoveSelection();    // fight
+                }
+                else if (currentAction == 1)
+                {
+                    StartCoroutine(RunTurns(BattleAction.UseItem));  // bag
+                }
+                else if (currentAction == 2)
+                {
+                    prevState = state;
+                    OpenPartyScreen();  // pokemon
+                }
+                else if (currentAction == 3)
+                {
+                    StartCoroutine(RunTurns(BattleAction.Run));
+                } // run
+            }            
         }
     }
 
     private void HandleMoveSelection()
     {
-        if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
-            ++currentMove;
-        else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
-            --currentMove;
-        else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-            currentMove += 2;
-        else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-            currentMove -= 2;
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
+        {
+            if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
+                ++currentMove;
+            else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
+                --currentMove;
+            else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
+                currentMove += 2;
+            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                currentMove -= 2;
+        }
+        else
+        {
+            if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
+                ++currentMove;
+            else if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
+                --currentMove;
+            else if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
+                currentMove += 2;
+            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
+                currentMove -= 2;            
+        }
 
         currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Pokemon.Moves.Count - 1);
 
         dialogBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
 
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        if (gamepadConnected)
         {
-            var move = playerUnit.Pokemon.Moves[currentMove];
-            if (move.PP == 0)  return;
-                     
-            dialogBox.EnableMoveSelector(false);
-            dialogBox.EnableDialogText(true);
-            StartCoroutine(RunTurns(BattleAction.Move));
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+            {
+                var move = playerUnit.Pokemon.Moves[currentMove];
+                if (move.PP == 0)  return;
+                        
+                dialogBox.EnableMoveSelector(false);
+                dialogBox.EnableDialogText(true);
+                StartCoroutine(RunTurns(BattleAction.Move));
+            }
+            else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+            {
+                dialogBox.EnableMoveSelector(false);
+                dialogBox.EnableDialogText(true);
+                ActionSelection();           
+            }
         }
-        else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+        else
         {
-            dialogBox.EnableMoveSelector(false);
-            dialogBox.EnableDialogText(true);
-            ActionSelection();           
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
+            {
+                var move = playerUnit.Pokemon.Moves[currentMove];
+                if (move.PP == 0) return;
+
+                dialogBox.EnableMoveSelector(false);
+                dialogBox.EnableDialogText(true);
+                StartCoroutine(RunTurns(BattleAction.Move));
+            }
+            else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
+            {
+                dialogBox.EnableMoveSelector(false);
+                dialogBox.EnableDialogText(true);
+                ActionSelection();
+            }            
         }
     }
 
     private void HandlePartySelection()
     {
-        if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
-            ++currentMember;
-        else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
-            --currentMember;
-        else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-            currentMember += 2;
-        else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-            currentMember -= 2;
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
+        {
+            if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
+                ++currentMember;
+            else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
+                --currentMember;
+            else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
+                currentMember += 2;
+            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                currentMember -= 2;
+        }
+        else
+        {
+            if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
+                ++currentMember;
+            else if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
+                --currentMember;
+            else if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
+                currentMember += 2;
+            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
+                currentMember -= 2;
+        }
 
         currentMember = Mathf.Clamp(currentMember, 0, playerParty.Pokemons.Count - 1);
 
         partyScreen.UpdateMemberSelection(currentMember);
 
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        if (gamepadConnected)
         {
-            var selectedMember = playerParty.Pokemons[currentMember];
-            if (selectedMember.HP <= 0)
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
             {
-                partyScreen.SetMessageText("You can't send out a fainted pokemon");
-                return;
-            }
-            if (selectedMember == playerUnit.Pokemon)
-            {
-                partyScreen.SetMessageText("You can't switch with the same pokemon");
-                return;
-            }
+                var selectedMember = playerParty.Pokemons[currentMember];
+                if (selectedMember.HP <= 0)
+                {
+                    partyScreen.SetMessageText("You can't send out a fainted pokemon");
+                    return;
+                }
+                if (selectedMember == playerUnit.Pokemon)
+                {
+                    partyScreen.SetMessageText("You can't switch with the same pokemon");
+                    return;
+                }
 
-            partyScreen.gameObject.SetActive(false);
+                partyScreen.gameObject.SetActive(false);
 
-            if (prevState == BattleState.ActionSelection)
-            {
-                prevState = null;
-                StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
+                if (prevState == BattleState.ActionSelection)
+                {
+                    prevState = null;
+                    StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
+                }
+                else
+                {
+                    state = BattleState.Busy;
+                    StartCoroutine(SwitchPokemon(selectedMember));
+                }
             }
-            else
+            else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
             {
-                state = BattleState.Busy;
-                StartCoroutine(SwitchPokemon(selectedMember));
+                if (playerUnit.Pokemon.HP <= 0)
+                {
+                    partyScreen.SetMessageText("You have to choose a pokemon to continue");
+                    return;
+                }
+
+                partyScreen.gameObject.SetActive(false);
+
+                if (prevState == BattleState.AboutToUse)
+                {
+                    prevState = null;
+                    StartCoroutine(SendNextTrainerPokemon());
+                }
+                else
+                    ActionSelection();
             }
         }
-        else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+        else
         {
-            if (playerUnit.Pokemon.HP <= 0)
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
             {
-                partyScreen.SetMessageText("You have to choose a pokemon to continue");
-                return;
+                var selectedMember = playerParty.Pokemons[currentMember];
+                if (selectedMember.HP <= 0)
+                {
+                    partyScreen.SetMessageText("You can't send out a fainted pokemon");
+                    return;
+                }
+                if (selectedMember == playerUnit.Pokemon)
+                {
+                    partyScreen.SetMessageText("You can't switch with the same pokemon");
+                    return;
+                }
+
+                partyScreen.gameObject.SetActive(false);
+
+                if (prevState == BattleState.ActionSelection)
+                {
+                    prevState = null;
+                    StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
+                }
+                else
+                {
+                    state = BattleState.Busy;
+                    StartCoroutine(SwitchPokemon(selectedMember));
+                }
             }
-
-            partyScreen.gameObject.SetActive(false);
-
-            if (prevState == BattleState.AboutToUse)
+            else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
             {
-                prevState = null;
-                StartCoroutine(SendNextTrainerPokemon());
+                if (playerUnit.Pokemon.HP <= 0)
+                {
+                    partyScreen.SetMessageText("You have to choose a pokemon to continue");
+                    return;
+                }
+
+                partyScreen.gameObject.SetActive(false);
+
+                if (prevState == BattleState.AboutToUse)
+                {
+                    prevState = null;
+                    StartCoroutine(SendNextTrainerPokemon());
+                }
+                else
+                    ActionSelection();
             }
-            else
-                ActionSelection();
         }     
     }
 
     private void HandleAboutToUse()
     {
-        if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-            aboutToUseChoice = !aboutToUseChoice;
-
-        dialogBox.UpdateChoiceBox(aboutToUseChoice);
-
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
         {
-            dialogBox.EnableChoiceBox(false);
-            if (aboutToUseChoice == true) 
+            if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                aboutToUseChoice = !aboutToUseChoice;
+
+            dialogBox.UpdateChoiceBox(aboutToUseChoice);
+
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
             {
-                prevState = BattleState.AboutToUse;
-                OpenPartyScreen();
+                dialogBox.EnableChoiceBox(false);
+                if (aboutToUseChoice == true) 
+                {
+                    prevState = BattleState.AboutToUse;
+                    OpenPartyScreen();
+                }
+                else
+                {
+                    StartCoroutine(SendNextTrainerPokemon());
+                }            
             }
-            else
+            else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
             {
+                dialogBox.EnableChoiceBox(false);
                 StartCoroutine(SendNextTrainerPokemon());
-            }            
+            }
         }
-        else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+        else
         {
-            dialogBox.EnableChoiceBox(false);
-            StartCoroutine(SendNextTrainerPokemon());
-        }        
+            if ((Keyboard.current.downArrowKey.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                aboutToUseChoice = !aboutToUseChoice;
+
+            dialogBox.UpdateChoiceBox(aboutToUseChoice);
+
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
+            {
+                dialogBox.EnableChoiceBox(false);
+                if (aboutToUseChoice == true)
+                {
+                    prevState = BattleState.AboutToUse;
+                    OpenPartyScreen();
+                }
+                else
+                {
+                    StartCoroutine(SendNextTrainerPokemon());
+                }
+            }
+            else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
+            {
+                dialogBox.EnableChoiceBox(false);
+                StartCoroutine(SendNextTrainerPokemon());
+            }
+        }       
     }
 
     private bool CheckIfMoveHits(Move move, Pokemon source, Pokemon target)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum GameState { FreeRoam, Battle, Dialogue, Cutscene, Paused }
 
@@ -54,6 +55,14 @@ public class GameController : MonoBehaviour
         {
             DialogueManager.Instance.HandleUpdate();
         }
+    }
+
+    public bool IsGamepadConnected()
+    {
+        var gamepad = Gamepad.current;
+        if (gamepad != null)
+            return true;
+        return false;        
     }
 
     public void StartBattle()

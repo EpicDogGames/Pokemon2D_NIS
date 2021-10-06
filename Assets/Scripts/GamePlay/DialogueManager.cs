@@ -44,21 +44,44 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void HandleUpdate()
-    {        
-        if (((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)) && !isTyping)
-        {
-            ++currentLine;
-            if (currentLine < dialogue.Lines.Count)
+    {
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
+        {        
+            if (((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)) && !isTyping)
             {
-                StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
+                ++currentLine;
+                if (currentLine < dialogue.Lines.Count)
+                {
+                    StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
+                }
+                else
+                {
+                    currentLine = 0;
+                    IsShowing = false;
+                    dialogueBox.SetActive(false);
+                    OnDialogueFinished?.Invoke();
+                    OnCloseDialogue?.Invoke();
+                }
             }
-            else
+        }
+        else
+        {
+            if (((Keyboard.current.enterKey.wasReleasedThisFrame)) && !isTyping)
             {
-                currentLine = 0;
-                IsShowing = false;
-                dialogueBox.SetActive(false);
-                OnDialogueFinished?.Invoke();
-                OnCloseDialogue?.Invoke();
+                ++currentLine;
+                if (currentLine < dialogue.Lines.Count)
+                {
+                    StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
+                }
+                else
+                {
+                    currentLine = 0;
+                    IsShowing = false;
+                    dialogueBox.SetActive(false);
+                    OnDialogueFinished?.Invoke();
+                    OnCloseDialogue?.Invoke();
+                }
             }
         }
     }

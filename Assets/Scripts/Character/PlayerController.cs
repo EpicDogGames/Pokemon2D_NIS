@@ -41,9 +41,20 @@ public class PlayerController : MonoBehaviour
 
         character.HandleUpdate();
 
-        if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
+        if (gamepadConnected)
         {
-            Interact();   
+            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+            {
+                Interact();   
+            }
+        }
+        else
+        {
+            if (Keyboard.current.enterKey.wasReleasedThisFrame)
+            {
+                Interact();
+            }    
         }
     }
 
