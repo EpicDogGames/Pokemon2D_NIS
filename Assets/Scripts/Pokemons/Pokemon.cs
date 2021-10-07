@@ -32,7 +32,6 @@ public class Pokemon
     }
 
     public int HP { get; set; }
-
     public int Exp { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
@@ -69,6 +68,41 @@ public class Pokemon
         ResetStatBoost();
         Status = null;
         VolatileStatus = null;
+    }
+
+    public Pokemon(PokemonSaveData saveData)
+    {
+        _base = PokemonDB.GetPokemonByName(saveData.name);
+        HP = saveData.hp;
+        level = saveData.level;
+        Exp = saveData.exp;
+
+        if (saveData.statusId != null)
+            Status = ConditionsDB.Conditions[saveData.statusId.Value];
+        else
+            Status = null;
+
+        Moves = saveData.moves.Select(s => new Move(s)).ToList();
+
+        // initialize the stats
+        CalculateStats();
+        StatusChanges = new Queue<string>();
+        ResetStatBoost();
+        VolatileStatus = null;
+    }
+
+    public PokemonSaveData GetSaveData()
+    {
+        var saveData = new PokemonSaveData()
+        {
+            name = Base.Name,
+            hp = HP,
+            level = Level,
+            exp = Exp,
+            statusId = Status?.ID,
+            moves = Moves.Select(m => m.GetSaveData()).ToList()
+        };
+        return saveData;
     }
 
     private void CalculateStats()
@@ -297,4 +331,15 @@ public class DamageDetails
     public bool Fainted { get; set; }
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
+}
+
+[System.Serializable]           // this is because you only need to save portions of the pokemon class
+public class PokemonSaveData
+{
+    public string name;
+    public int hp;
+    public int level;
+    public int exp;
+    public ConditionID? statusId;     // if a pokemon has a conditionID, it is saved .. if not, no error
+    public List<MoveSaveData> moves;
 }
