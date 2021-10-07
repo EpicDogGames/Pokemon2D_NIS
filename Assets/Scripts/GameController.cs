@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
 
     GameState stateBeforePause;
 
+    public SceneDetails CurrentScene { get; private set; }
+    public SceneDetails PreviousScene { get; private set; }
+
     TrainerController trainer;
 
     public static GameController Instance { get; private set; } 
@@ -72,7 +75,7 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(false);
 
         var playerParty = playerController.GetComponent<PokemonParty>();
-        var wildPokemon = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildPokemon();
+        var wildPokemon = CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon();
 
         var wildPokemonCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
 
@@ -109,6 +112,12 @@ public class GameController : MonoBehaviour
             state = stateBeforePause;
     }
 
+    public void SetCurrentScene(SceneDetails currScene)
+    {
+        PreviousScene = CurrentScene;
+        CurrentScene = currScene;
+    }
+
     private void EndBattle(bool won) 
     {
         if (trainer != null && won == true)
@@ -121,4 +130,5 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);   
     }
+
 }
