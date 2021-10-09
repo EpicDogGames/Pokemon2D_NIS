@@ -4646,7 +4646,18 @@ PrefabInstance:
     - target: {fileID: 5717467632238457904, guid: 68470a18f993e6044abb4d725325e51a,
         type: 3}
       propertyPath: pokemons.Array.size
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717467632238457904, guid: 68470a18f993e6044abb4d725325e51a,
+        type: 3}
+      propertyPath: pokemons.Array.data[1]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: b8993f13b2f294f43b87a78a1197670a,
+        type: 2}
+    - target: {fileID: 5717467632238457904, guid: 68470a18f993e6044abb4d725325e51a,
+        type: 3}
+      propertyPath: pokemons.Array.data[1].level
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68470a18f993e6044abb4d725325e51a, type: 3}

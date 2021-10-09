@@ -24,10 +24,8 @@ public class BattleSystem : MonoBehaviour
     public event Action<bool> OnBattleOver;
 
     BattleState state;
-    BattleState? prevState;   // question mark makes prevState nullable
     int currentAction;
     int currentMove;
-    int currentMember;
     bool aboutToUseChoice = true;
 
     PokemonParty playerParty;
@@ -128,6 +126,7 @@ public class BattleSystem : MonoBehaviour
 
     private void OpenPartyScreen()
     {
+        partyScreen.CalledFrom = state;
         state = BattleState.PartyScreen;
         partyScreen.SetPartyData(playerParty.Pokemons);  
         partyScreen.gameObject.SetActive(true); 
@@ -177,7 +176,6 @@ public class BattleSystem : MonoBehaviour
                 }
                 else if (currentAction == 2)
                 {
-                    prevState = state;
                     OpenPartyScreen();  // pokemon
                 }
                 else if (currentAction == 3)
@@ -200,7 +198,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else if (currentAction == 2)
                 {
-                    prevState = state;
+                    partyScreen.CalledFrom = state;
                     OpenPartyScreen();  // pokemon
                 }
                 else if (currentAction == 3)
@@ -282,129 +280,120 @@ public class BattleSystem : MonoBehaviour
     private void HandlePartySelection()
     {
         var gamepadConnected = GameController.Instance.IsGamepadConnected();
-        if (gamepadConnected)
-        {
-            if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
-                ++currentMember;
-            else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
-                --currentMember;
-            else if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-                currentMember += 2;
-            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-                currentMember -= 2;
-        }
-        else
-        {
-            if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
-                ++currentMember;
-            else if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
-                --currentMember;
-            else if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
-                currentMember += 2;
-            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
-                currentMember -= 2;
-        }
 
-        currentMember = Mathf.Clamp(currentMember, 0, playerParty.Pokemons.Count - 1);
-
-        partyScreen.UpdateMemberSelection(currentMember);
-
-        if (gamepadConnected)
+        Action onSelected = () =>
         {
-            if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+            if (gamepadConnected)
             {
-                var selectedMember = playerParty.Pokemons[currentMember];
-                if (selectedMember.HP <= 0)
+                if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
                 {
-                    partyScreen.SetMessageText("You can't send out a fainted pokemon");
-                    return;
-                }
-                if (selectedMember == playerUnit.Pokemon)
-                {
-                    partyScreen.SetMessageText("You can't switch with the same pokemon");
-                    return;
-                }
+                    var selectedMember = partyScreen.SelectedMember;
+                    if (selectedMember.HP <= 0)
+                    {
+                        partyScreen.SetMessageText("You can't send out a fainted pokemon");
+                        return;
+                    }
+                    if (selectedMember == playerUnit.Pokemon)
+                    {
+                        partyScreen.SetMessageText("You can't switch with the same pokemon");
+                        return;
+                    }
 
-                partyScreen.gameObject.SetActive(false);
+                    partyScreen.gameObject.SetActive(false);
 
-                if (prevState == BattleState.ActionSelection)
-                {
-                    prevState = null;
-                    StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
-                }
-                else
-                {
-                    state = BattleState.Busy;
-                    StartCoroutine(SwitchPokemon(selectedMember));
+                    if (partyScreen.CalledFrom == BattleState.ActionSelection)
+                    {
+                        StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
+                    }
+                    else
+                    {
+                        state = BattleState.Busy;
+                        bool isTrainerAboutToUse = partyScreen.CalledFrom == BattleState.AboutToUse;
+                        StartCoroutine(SwitchPokemon(selectedMember, isTrainerAboutToUse));
+                    }
+                    partyScreen.CalledFrom = null;
                 }
             }
-            else if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+            else
             {
-                if (playerUnit.Pokemon.HP <= 0)
+                if (Keyboard.current.enterKey.wasReleasedThisFrame)
                 {
-                    partyScreen.SetMessageText("You have to choose a pokemon to continue");
-                    return;
-                }
+                    var selectedMember = partyScreen.SelectedMember;
+                    if (selectedMember.HP <= 0)
+                    {
+                        partyScreen.SetMessageText("You can't send out a fainted pokemon");
+                        return;
+                    }
+                    if (selectedMember == playerUnit.Pokemon)
+                    {
+                        partyScreen.SetMessageText("You can't switch with the same pokemon");
+                        return;
+                    }
 
-                partyScreen.gameObject.SetActive(false);
-
-                if (prevState == BattleState.AboutToUse)
-                {
-                    prevState = null;
-                    StartCoroutine(SendNextTrainerPokemon());
+                    partyScreen.gameObject.SetActive(false);
+                    if (partyScreen.CalledFrom == BattleState.ActionSelection)
+                    {
+                        StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
+                    }
+                    else
+                    {
+                        state = BattleState.Busy;
+                        StartCoroutine(SwitchPokemon(selectedMember));
+                    }
+                    partyScreen.CalledFrom = null;
                 }
-                else
-                    ActionSelection();
             }
-        }
-        else
+        };
+
+        Action onBack = () =>
         {
-            if (Keyboard.current.enterKey.wasReleasedThisFrame)
+            if (gamepadConnected)
             {
-                var selectedMember = playerParty.Pokemons[currentMember];
-                if (selectedMember.HP <= 0)
+                if ((Gamepad.current.buttonWest.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
                 {
-                    partyScreen.SetMessageText("You can't send out a fainted pokemon");
-                    return;
-                }
-                if (selectedMember == playerUnit.Pokemon)
-                {
-                    partyScreen.SetMessageText("You can't switch with the same pokemon");
-                    return;
-                }
+                    if (playerUnit.Pokemon.HP <= 0)
+                    {
+                        partyScreen.SetMessageText("You have to choose a pokemon to continue");
+                        return;
+                    }
 
-                partyScreen.gameObject.SetActive(false);
+                    partyScreen.gameObject.SetActive(false);
 
-                if (prevState == BattleState.ActionSelection)
-                {
-                    prevState = null;
-                    StartCoroutine(RunTurns(BattleAction.SwitchPokemon));
-                }
-                else
-                {
-                    state = BattleState.Busy;
-                    StartCoroutine(SwitchPokemon(selectedMember));
+                    if (partyScreen.CalledFrom == BattleState.AboutToUse)
+                    {
+                        StartCoroutine(SendNextTrainerPokemon());
+                    }
+                    else
+                        ActionSelection();
+
+                    partyScreen.CalledFrom = null;
                 }
             }
-            else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
+            else
             {
-                if (playerUnit.Pokemon.HP <= 0)
+                if (Keyboard.current.escapeKey.wasReleasedThisFrame)
                 {
-                    partyScreen.SetMessageText("You have to choose a pokemon to continue");
-                    return;
-                }
+                    if (playerUnit.Pokemon.HP <= 0)
+                    {
+                        partyScreen.SetMessageText("You have to choose a pokemon to continue");
+                        return;
+                    }
 
-                partyScreen.gameObject.SetActive(false);
+                    partyScreen.gameObject.SetActive(false);
 
-                if (prevState == BattleState.AboutToUse)
-                {
-                    prevState = null;
-                    StartCoroutine(SendNextTrainerPokemon());
+                    if (partyScreen.CalledFrom == BattleState.AboutToUse)
+                    {
+                        StartCoroutine(SendNextTrainerPokemon());
+                    }
+                    else
+                        ActionSelection();
+
+                    partyScreen.CalledFrom = null;
                 }
-                else
-                    ActionSelection();
             }
-        }     
+        };
+
+        partyScreen.HandleUpdate(onSelected, onBack);    
     }
 
     private void HandleAboutToUse()
@@ -422,7 +411,6 @@ public class BattleSystem : MonoBehaviour
                 dialogBox.EnableChoiceBox(false);
                 if (aboutToUseChoice == true) 
                 {
-                    prevState = BattleState.AboutToUse;
                     OpenPartyScreen();
                 }
                 else
@@ -448,7 +436,7 @@ public class BattleSystem : MonoBehaviour
                 dialogBox.EnableChoiceBox(false);
                 if (aboutToUseChoice == true)
                 {
-                    prevState = BattleState.AboutToUse;
+                    partyScreen.CalledFrom = BattleState.AboutToUse;
                     OpenPartyScreen();
                 }
                 else
@@ -633,7 +621,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (playerAction  == BattleAction.SwitchPokemon)
             {
-                var selectedPokemon = playerParty.Pokemons[currentMember];
+                var selectedPokemon = partyScreen.SelectedMember;
                 state = BattleState.Busy;
                 yield return SwitchPokemon(selectedPokemon);
             }
@@ -739,7 +727,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog("It's not very effective");
     }
 
-    private IEnumerator SwitchPokemon(Pokemon newPokemon)
+    private IEnumerator SwitchPokemon(Pokemon newPokemon, bool isTrainerAboutToUse=false)
     {
         if (playerUnit.Pokemon.HP > 0)
         {
@@ -752,15 +740,10 @@ public class BattleSystem : MonoBehaviour
         dialogBox.SetMoveNames(newPokemon.Moves);
         yield return dialogBox.TypeDialog($"Go {newPokemon.Base.Name}!");
 
-        if (prevState == null)
-        {
-            state = BattleState.RunningTurn;
-        }
-        else if (prevState == BattleState.AboutToUse)
-        {
-            prevState = null;
+        if (isTrainerAboutToUse)
             StartCoroutine(SendNextTrainerPokemon());
-        }
+        else
+            state = BattleState.RunningTurn;
     }
 
     private IEnumerator SendNextTrainerPokemon()

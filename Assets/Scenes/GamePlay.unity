@@ -420,6 +420,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EssentialObjects
       objectReference: {fileID: 0}
+    - target: {fileID: 6812172747509486347, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8147553970271375357, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
       propertyPath: m_AnchorMax.x
