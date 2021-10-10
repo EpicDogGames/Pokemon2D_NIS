@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8715345361102185277}
   - component: {fileID: 8715345361102185276}
   - component: {fileID: 8643928533887862089}
+  - component: {fileID: 8457369811340008209}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -234,6 +235,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueId: 
+--- !u!114 &8457369811340008209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8715345361102185253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6c9b925990be444e8fa5f31565593de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slots:
+  - item: {fileID: 11400000, guid: 42f7b4bad1a9746428f7b58635d7325d, type: 2}
+    count: 5
+  - item: {fileID: 11400000, guid: 03e4b8b7d71989847acd7cbfee97ff28, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: 1edb1aedbed4b1e409e97be167f88a38, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: f2e65677683107e49aef84ecf37b74ac, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: 9226e411315ea4c42a829abec44da3ba, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: dcddf33324ed7be41ac9a5fa4cee2767, type: 2}
+    count: 4
+  - item: {fileID: 11400000, guid: 1edb1aedbed4b1e409e97be167f88a38, type: 2}
+    count: 4
+  - item: {fileID: 11400000, guid: dcddf33324ed7be41ac9a5fa4cee2767, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 7cfd3ff28f35ea940b9203a5256571a1, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: eaa6446c3bfb33043b0eaf1d2da413fc, type: 2}
+    count: 3
+  - item: {fileID: 11400000, guid: 42f7b4bad1a9746428f7b58635d7325d, type: 2}
+    count: 8
+  - item: {fileID: 11400000, guid: 9226e411315ea4c42a829abec44da3ba, type: 2}
+    count: 4
+  - item: {fileID: 11400000, guid: f2e65677683107e49aef84ecf37b74ac, type: 2}
+    count: 4
+  - item: {fileID: 11400000, guid: dcddf33324ed7be41ac9a5fa4cee2767, type: 2}
+    count: 4
 --- !u!1 &8715345361951143062
 GameObject:
   m_ObjectHideFlags: 0

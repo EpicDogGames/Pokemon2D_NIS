@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad4aac79f2ac67469dda7e611d9b9bf, type: 3}
+  m_Name: Revive
+  m_EditorClassIdentifier: 
+  name: Revive
+  description: Removes a pokemon from paralyzed state
+  icon: {fileID: 3167248205646508844, guid: b0c7562d64e0689468b2c8aad376ed09, type: 3}
+  hpAmount: 0
+  restoreMaxHP: 0
+  ppAmount: 0
+  restoreMaxPP: 0
+  status: 4
+  recoverAllStatus: 0
+  revive: 0
+  maxRevive: 0

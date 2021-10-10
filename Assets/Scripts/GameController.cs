@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Cutscene, Paused }
+public enum GameState { FreeRoam, Battle, Dialogue, Menu, PartyScreen, Bag, Cutscene, Paused }
 
 public class GameController : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] InventoryUI inventoryUI;
 
     GameState state;
 
@@ -31,6 +32,10 @@ public class GameController : MonoBehaviour
         Instance = this;
 
         menuController = GetComponent<MenuController>();
+
+        // this disables the mouse so that it can be used or seen in the game
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
 
         PokemonDB.Init();
         MoveDB.Init();
@@ -112,6 +117,16 @@ public class GameController : MonoBehaviour
             };
 
             partyScreen.HandleUpdate(onSelected, onBack);    
+        }
+        else if (state == GameState.Bag) 
+        {
+            Action onBack = () =>
+            {
+                inventoryUI.gameObject.SetActive(false);
+                state = GameState.FreeRoam;
+            };
+
+            inventoryUI.HandleUpdate(onBack);
         }
     }
 
@@ -198,6 +213,8 @@ public class GameController : MonoBehaviour
         else if (selectedItem == 1)
         {
             // Bag
+            inventoryUI.gameObject.SetActive(true);
+            state = GameState.Bag;
         }
         else if (selectedItem == 2)
         {

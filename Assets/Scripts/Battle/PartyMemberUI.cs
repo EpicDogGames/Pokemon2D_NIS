@@ -8,8 +8,13 @@ public class PartyMemberUI : MonoBehaviour
     [SerializeField] Text nameText;
     [SerializeField] Text lvlText;
     [SerializeField] HPBar hpBar;
+    [SerializeField] Image selectUnselectBackground;
 
-    [SerializeField] Color highlightedColor;
+    //[SerializeField] Color highlightedColor;
+    [SerializeField] Color selectedTextColor;
+    [SerializeField] Color unselectedTextColor;
+    [SerializeField] Color selectedImageColor;
+    [SerializeField] Color unselectedImageColor;
 
     Pokemon _pokemon;
 
@@ -26,11 +31,15 @@ public class PartyMemberUI : MonoBehaviour
     {
         if (selected) 
         {
-            nameText.color = highlightedColor;    
+            //nameText.color = highlightedColor;   
+            nameText.color = selectedTextColor;
+            selectUnselectBackground.color = selectedImageColor; 
         }
         else
         {
-            nameText.color = Color.black;
+            //nameText.color = Color.black;
+            nameText.color = unselectedTextColor;
+            selectUnselectBackground.color = unselectedImageColor;
         }
     }
 }

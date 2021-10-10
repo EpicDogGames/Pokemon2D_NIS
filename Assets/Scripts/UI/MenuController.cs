@@ -10,6 +10,9 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] GameObject menu;
 
+    [SerializeField] List<Text> menuItems;
+    [SerializeField] List<Image> menuImages;
+
     [SerializeField] Color selectedTextColor;
     [SerializeField] Color unselectedTextColor;
     [SerializeField] Color selectedImageColor;
@@ -18,16 +21,16 @@ public class MenuController : MonoBehaviour
     public event Action<int> onMenuSelected;
     public event Action onBack;
 
-    List<Text> menuItems;
-    List<Image> menuImages;
+    // List<Text> menuItems;
+    // List<Image> menuImages;
 
     int selectedItem = 0;
 
-    private void Awake() 
-    {
-        menuItems = menu.GetComponentsInChildren<Text>().ToList();
-        menuImages = menu.GetComponentsInChildren<Image>().ToList();
-    }
+    // private void Awake() 
+    // {
+    //     menuItems = menu.GetComponentsInChildren<Text>().ToList();
+    //     menuImages = menu.GetComponentsInChildren<Image>().ToList();
+    // }
 
     public void OpenMenu()
     {
@@ -100,12 +103,12 @@ public class MenuController : MonoBehaviour
             if (i == selectedItem)
             {
                 menuItems[i].color = selectedTextColor;
-                menuImages[i+1].color = selectedImageColor;        // have to add 1 to count because the menu is an image and is counted in the list
+                menuImages[i].color = selectedImageColor;
             }
             else
             {
                 menuItems[i].color = unselectedTextColor;
-                menuImages[i+1].color = unselectedImageColor;      // have to add 1 to count because the menu is an image and is counted in the list
+                menuImages[i].color = unselectedImageColor;
             }
         }
     }
