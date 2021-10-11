@@ -20,6 +20,8 @@ public class PartyMemberUI : MonoBehaviour
 
     public void SetData(Pokemon pokemon)
     {
+        Debug.Log("Called SetData in PartyMemberUI script");
+        
         _pokemon = pokemon;
 
         nameText.text = pokemon.Base.Name;

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+public enum InventoryUIState { ItemSelection, PartySelection, Busy }
+
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject itemList;
@@ -21,7 +23,11 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Color selectedImageColor;
     [SerializeField] Color unselectedImageColor;
 
+    [SerializeField] PartyScreen partyScreen;
+
     int selectedItem;
+
+    InventoryUIState state;
 
     const int itemsInViewport = 8;
 
@@ -60,42 +66,67 @@ public class InventoryUI : MonoBehaviour
 
     public void HandleUpdate(Action onBack)
     {
-        int previousSelection = selectedItem;
-
-        var gamepadConnected = GameController.Instance.IsGamepadConnected();
-        if (gamepadConnected)
+        if (state == InventoryUIState.ItemSelection)
         {
-            if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
-                ++selectedItem;
-            else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
-                --selectedItem;
-        }
-        else
-        {
-            if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
-                ++selectedItem;
-            else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
-                --selectedItem;
-        }
+            int previousSelection = selectedItem;
 
-        selectedItem = Mathf.Clamp(selectedItem, 0, inventory.Slots.Count - 1);
-
-        if (previousSelection != selectedItem)
-            UpdateItemSelection();
-
-        if (gamepadConnected)
-        {
-            if ((Gamepad.current.buttonEast.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+            var gamepadConnected = GameController.Instance.IsGamepadConnected();
+            if (gamepadConnected)
             {
-                onBack?.Invoke();
+                if ((Gamepad.current.dpad.down.wasReleasedThisFrame) || (Keyboard.current.downArrowKey.wasReleasedThisFrame))
+                    ++selectedItem;
+                else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
+                    --selectedItem;
+            }
+            else
+            {
+                if (Keyboard.current.downArrowKey.wasReleasedThisFrame)
+                    ++selectedItem;
+                else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
+                    --selectedItem;
+            }
+
+            selectedItem = Mathf.Clamp(selectedItem, 0, inventory.Slots.Count - 1);
+
+            if (previousSelection != selectedItem)
+                UpdateItemSelection();
+
+            if (gamepadConnected)
+            {
+                if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
+                {
+                    OpenPartyScreen();
+                }
+                else if ((Gamepad.current.buttonEast.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
+                {
+                    onBack?.Invoke();
+                }
+            }
+            else
+            {
+                if (Keyboard.current.enterKey.wasReleasedThisFrame)
+                {
+                    OpenPartyScreen();
+                }
+                else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
+                {
+                    onBack?.Invoke();
+                }
             }
         }
-        else
+        else if (state == InventoryUIState.PartySelection)
         {
-            if (Keyboard.current.escapeKey.wasReleasedThisFrame)
+            Action onSelected = () =>
             {
-                onBack?.Invoke();
-            }
+                // use the item on selected pokemon
+            };
+
+            Action onBackPartyScreen = () =>
+            {
+                ClosePartyScreen();
+            };
+
+            partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
         }
     }
 
@@ -126,6 +157,8 @@ public class InventoryUI : MonoBehaviour
 
     void HandleScrolling()
     {
+        if (slotUIList.Count <= itemsInViewport)  return;
+        
         float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport/2, 0, selectedItem) * slotUIList[0].Height;
         // use localPosition because it is a child object
         itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
@@ -134,5 +167,17 @@ public class InventoryUI : MonoBehaviour
         upArrow.gameObject.SetActive(showUpArrow);
         bool showDownArrow = selectedItem + itemsInViewport / 2 < slotUIList.Count;
         downArrow.gameObject.SetActive(showDownArrow);
+    }
+
+    void OpenPartyScreen()
+    {
+        state = InventoryUIState.PartySelection;
+        partyScreen.gameObject.SetActive(true);
+    }
+
+    void ClosePartyScreen()
+    {
+        state = InventoryUIState.ItemSelection;
+        partyScreen.gameObject.SetActive(false);
     }
 }
