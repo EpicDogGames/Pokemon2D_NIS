@@ -18,15 +18,21 @@ public class PartyMemberUI : MonoBehaviour
 
     Pokemon _pokemon;
 
-    public void SetData(Pokemon pokemon)
+    public void Init(Pokemon pokemon)
     {
         Debug.Log("Called SetData in PartyMemberUI script");
         
         _pokemon = pokemon;
+        UpdateData();
 
-        nameText.text = pokemon.Base.Name;
-        lvlText.text = "Lvl " + pokemon.Level;
-        hpBar.SetHP((float) pokemon.HP / pokemon.MaxHp); 
+        _pokemon.OnHPChanged += UpdateData;
+    }
+
+    void UpdateData()
+    {
+        nameText.text = _pokemon.Base.Name;
+        lvlText.text = "Lvl " + _pokemon.Level;
+        hpBar.SetHP((float)_pokemon.HP / _pokemon.MaxHp);
     }
 
     public void SetSelected(bool selected) 

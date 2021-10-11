@@ -29,6 +29,25 @@ public class DialogueManager : MonoBehaviour
         Instance = this;    
     }
 
+    public IEnumerator ShowDialogueText(string text, bool waitForInput=true) 
+    {
+        IsShowing = true;
+        dialogueBox.SetActive(true);  
+
+        yield return TypeDialogue(text);
+        if (waitForInput)
+        {
+            var gamepadConnected = GameController.Instance.IsGamepadConnected();
+            if (gamepadConnected)
+                yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
+            else
+                yield return new WaitUntil(() => (Keyboard.current.enterKey.wasReleasedThisFrame));
+        }
+
+        dialogueBox.SetActive(false);
+        IsShowing = false;
+    }
+
     public IEnumerator ShowDialogue(Dialogue dialogue, Action OnFinished=null)
     {
         yield return new WaitForEndOfFrame();

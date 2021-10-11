@@ -20,4 +20,9 @@ public class ItemBase : ScriptableObject
     // public Sprite Icon {
     //     get => icon;
     // }   this means the same thing as above
+
+    public virtual bool Use(Pokemon pokemon)
+    {
+        return false;   
+    }
 }
