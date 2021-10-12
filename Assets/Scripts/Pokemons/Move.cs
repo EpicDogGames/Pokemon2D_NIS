@@ -29,6 +29,12 @@ public class Move
 
         return saveData;
     }
+
+    public void IncreasePP(int amount)
+    {
+        Debug.Log($"Called to increase PP by {amount}");
+        PP = Mathf.Clamp(PP + amount, 0, Base.PP);
+    }
 }
 
 [System.Serializable]                // this is because you only need to save portions of the move class

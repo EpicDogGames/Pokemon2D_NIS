@@ -1535,6 +1535,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.data[6].item
+      value: 
+      objectReference: {fileID: 11400000, guid: eaa6446c3bfb33043b0eaf1d2da413fc,
+        type: 2}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.data[7].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 42f7b4bad1a9746428f7b58635d7325d,
+        type: 2}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.data[5].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.data[6].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5990929225936358192, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: slots.Array.data[7].count
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6132012803425689960, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
       propertyPath: m_AnchorMax.y

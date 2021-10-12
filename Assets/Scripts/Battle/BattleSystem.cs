@@ -126,7 +126,8 @@ public class BattleSystem : MonoBehaviour
 
     private void ActionSelection()
     {
-        currentAction = 0;
+        // resets the action to the first one in the list at beginning of player's turn vs what was last selected
+        currentAction = 0;          
         state = BattleState.ActionSelection;
         // StartCoroutine(dialogBox.TypeDialog("Choose an action"));   use if you want animated text
         dialogBox.SetDialog("Choose an action");                    // use if you dont wanted animated text
@@ -135,6 +136,7 @@ public class BattleSystem : MonoBehaviour
 
     private void MoveSelection()
     {
+        // resets the move to the first one in the list at beginning of player's turn vs what was last selected
         currentMove = 0;
         state = BattleState.MoveSelection;
         dialogBox.EnableActionSelector(false);

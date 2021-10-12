@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aad4aac79f2ac67469dda7e611d9b9bf, type: 3}
-  m_Name: Revive
+  m_Name: PoisonPowder
   m_EditorClassIdentifier: 
-  name: Revive
-  description: Removes a pokemon from paralyzed state
-  icon: {fileID: 3167248205646508844, guid: b0c7562d64e0689468b2c8aad376ed09, type: 3}
+  name: Poison Powder
+  description: Poisons the Pokemon
+  icon: {fileID: 0}
   hpAmount: 0
   restoreMaxHP: 0
   ppAmount: 0
   restoreMaxPP: 0
-  status: 0
+  status: 1
   recoverAllStatus: 0
-  revive: 1
+  revive: 0
   maxRevive: 0
