@@ -23,6 +23,12 @@ public class BattleHUD : MonoBehaviour
 
     public void SetData(Pokemon pokemon)
     {
+        if (_pokemon != null)
+        {
+            _pokemon.OnHPChanged -= UpdateHP;
+            _pokemon.OnStatusChanged -= SetStatusText;         
+        }
+
         _pokemon = pokemon;
 
         nameText.text = pokemon.Base.Name;
@@ -41,6 +47,7 @@ public class BattleHUD : MonoBehaviour
 
         SetStatusText();
         _pokemon.OnStatusChanged += SetStatusText;
+        _pokemon.OnHPChanged += UpdateHP;
     }
 
     private void SetStatusText()
@@ -59,13 +66,9 @@ public class BattleHUD : MonoBehaviour
         lvlText.text = "Lvl " + _pokemon.Level;        
     }
 
-    public IEnumerator UpdateHP()
+    public void UpdateHP()
     {
-        if (_pokemon.HpChanged)
-        {
-            yield return hpBar.SetHPSmooth((float)_pokemon.HP / _pokemon.MaxHp);
-            _pokemon.HpChanged = false;
-        }
+        StartCoroutine(UpdateHPAsync());
     }
 
     public void SetExp()
@@ -74,6 +77,20 @@ public class BattleHUD : MonoBehaviour
 
         float normalizedExp = GetNormalizedExp();
         expBar.transform.localScale = new Vector3(normalizedExp, 1, 1);
+    }
+
+    private float GetNormalizedExp()
+    {
+        int currentLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level);
+        int nextLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level + 1);
+
+        float normalizedExp = (float)(_pokemon.Exp - currentLevelExp) / (nextLevelExp - currentLevelExp);
+        return Mathf.Clamp01(normalizedExp);
+    }
+
+    public IEnumerator UpdateHPAsync()
+    {
+        yield return hpBar.SetHPSmooth((float)_pokemon.HP / _pokemon.MaxHp);
     }
 
     public IEnumerator SetExpSmooth(bool reset=false)
@@ -88,13 +105,11 @@ public class BattleHUD : MonoBehaviour
         float normalizedExp = GetNormalizedExp();
         yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
     }
-        
-    private float GetNormalizedExp()
-    {
-        int currentLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level);
-        int nextLevelExp = _pokemon.Base.GetExpForLevel(_pokemon.Level + 1);
 
-        float normalizedExp = (float)(_pokemon.Exp - currentLevelExp) / (nextLevelExp - currentLevelExp);   
-        return Mathf.Clamp01(normalizedExp);
+    public IEnumerator WaitForHPUpdate()
+    {
+        yield return new WaitUntil(() => hpBar.IsUpdating == false);
     }
+        
+
 }

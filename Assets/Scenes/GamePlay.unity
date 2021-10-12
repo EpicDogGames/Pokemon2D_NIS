@@ -1775,6 +1775,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: EssentialObjects
       objectReference: {fileID: 0}
+    - target: {fileID: 6812172745936335647, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: pokemons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6812172745936335647, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: pokemons.Array.data[2]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ca9501ab48420c4b98ffeb005bae7ac,
+        type: 2}
     - target: {fileID: 6812172746071846158, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
       propertyPath: m_IsActive

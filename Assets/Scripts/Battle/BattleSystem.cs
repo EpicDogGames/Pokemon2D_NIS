@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, AboutToUse, MoveToForget, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, Bag, PartyScreen, AboutToUse, MoveToForget, BattleOver }
 public enum BattleAction { Move, SwitchPokemon, UseItem, Run }
 
 public class BattleSystem : MonoBehaviour
@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image trainerImage;
     [SerializeField] GameObject pokeballSprite;
     [SerializeField] MoveSelectionUI moveSelectionUI;
+    [SerializeField] InventoryUI inventoryUI;
 
     public event Action<bool> OnBattleOver;
 
@@ -75,6 +76,23 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
+        else if (state == BattleState.Bag)
+        {
+            Action onBack = () =>
+            {
+                inventoryUI.gameObject.SetActive(false);
+                state = BattleState.ActionSelection;
+            };
+
+            Action onItemUsed = ()  =>
+            {
+                state = BattleState.Busy;
+                inventoryUI.gameObject.SetActive(false);
+                StartCoroutine(RunTurns(BattleAction.UseItem));
+            };
+
+            inventoryUI.HandleUpdate(onBack, onItemUsed);
+        }
         else if (state == BattleState.AboutToUse)
         {
             HandleAboutToUse();
@@ -124,6 +142,12 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableMoveSelector(true);
     }
 
+    private void OpenBag()
+    {
+        state = BattleState.Bag;
+        inventoryUI.gameObject.SetActive(true);   
+    }
+
     private void OpenPartyScreen()
     {
         partyScreen.CalledFrom = state;
@@ -167,20 +191,24 @@ public class BattleSystem : MonoBehaviour
             {
                 if (currentAction == 0)
                 {
-                    MoveSelection();    // fight
+                    // fight
+                    MoveSelection();
                 }
                 else if (currentAction == 1)
-                { 
-                    StartCoroutine(RunTurns(BattleAction.UseItem));  // bag
+                {
+                    // bag 
+                    OpenBag();  
                 }
                 else if (currentAction == 2)
                 {
-                    OpenPartyScreen();  // pokemon
+                    // pokemon
+                    OpenPartyScreen();  
                 }
                 else if (currentAction == 3)
-                { 
+                {
+                    // run
                     StartCoroutine(RunTurns(BattleAction.Run));
-                } // run
+                } 
             }
         }
         else
@@ -189,21 +217,25 @@ public class BattleSystem : MonoBehaviour
             {
                 if (currentAction == 0)
                 {
-                    MoveSelection();    // fight
+                    // fight
+                    MoveSelection();
                 }
                 else if (currentAction == 1)
                 {
-                    StartCoroutine(RunTurns(BattleAction.UseItem));  // bag
+                    // bag
+                    OpenBag();
                 }
                 else if (currentAction == 2)
                 {
+                    // pokemon
                     partyScreen.CalledFrom = state;
-                    OpenPartyScreen();  // pokemon
+                    OpenPartyScreen();
                 }
                 else if (currentAction == 3)
                 {
+                    // run
                     StartCoroutine(RunTurns(BattleAction.Run));
-                } // run
+                }
             }            
         }
     }
@@ -626,8 +658,8 @@ public class BattleSystem : MonoBehaviour
             }
             else if (playerAction == BattleAction.UseItem)
             {
+                // this os handled from item screen, so do nothing and skip to enemy move
                 dialogBox.EnableActionSelector(false);
-                yield return ThrowPokeball();
             }
             else if (playerAction == BattleAction.Run)
             {
@@ -651,7 +683,7 @@ public class BattleSystem : MonoBehaviour
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit.Pokemon);
-            yield return sourceUnit.HUD.UpdateHP();
+            yield return sourceUnit.HUD.WaitForHPUpdate();
             yield break;
         }
         yield return ShowStatusChanges(sourceUnit.Pokemon);
@@ -672,7 +704,7 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 var damageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
-                yield return targetUnit.HUD.UpdateHP();
+                yield return targetUnit.HUD.WaitForHPUpdate();
                 yield return ShowDamageDetails(damageDetails);            
             }
 
@@ -707,7 +739,7 @@ public class BattleSystem : MonoBehaviour
         // statuses like psn or brn will hurt the pokemon after the turn
         sourceUnit.Pokemon.OnAfterTurn();
         yield return ShowStatusChanges(sourceUnit.Pokemon);
-        yield return sourceUnit.HUD.UpdateHP();
+        yield return sourceUnit.HUD.WaitForHPUpdate();
         if (sourceUnit.Pokemon.HP <= 0)
         {
             yield return HandlePokemonFainted(sourceUnit);
