@@ -84,11 +84,9 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.ActionSelection;
             };
 
-            Action onItemUsed = ()  =>
+            Action<ItemBase> onItemUsed = (ItemBase usedItem)  =>
             {
-                state = BattleState.Busy;
-                inventoryUI.gameObject.SetActive(false);
-                StartCoroutine(RunTurns(BattleAction.UseItem));
+                StartCoroutine(OnItemUsed(usedItem));
             };
 
             inventoryUI.HandleUpdate(onBack, onItemUsed);
@@ -883,7 +881,20 @@ public class BattleSystem : MonoBehaviour
         CheckForBattleOver(faintedUnit);
     }
 
-    private IEnumerator ThrowPokeball()
+    private IEnumerator OnItemUsed(ItemBase usedItem)
+    {
+        state = BattleState.Busy;
+        inventoryUI.gameObject.SetActive(false);
+
+        if (usedItem is PokeballItem)
+        {
+            yield return ThrowPokeball((PokeballItem)usedItem);
+        }
+
+        StartCoroutine(RunTurns(BattleAction.UseItem));
+    }
+
+    private IEnumerator ThrowPokeball(PokeballItem pokeballItem)
     {
         state = BattleState.Busy;
 
@@ -894,17 +905,18 @@ public class BattleSystem : MonoBehaviour
             yield break;
         }
 
-        yield return dialogBox.TypeDialog($"{player.Name} used POKEBALL");
+        yield return dialogBox.TypeDialog($"{player.Name} used {pokeballItem.Name}");
 
         var pokeballObj = Instantiate(pokeballSprite, playerUnit.transform.position - new Vector3(2, 0), Quaternion.identity);
         var pokeball = pokeballObj.GetComponent<SpriteRenderer>();
+        pokeball.sprite = pokeballItem.Icon;
 
         // animations
         yield return pokeball.transform.DOJump(enemyUnit.transform.position + new Vector3(0, 2), 2f, 1, 1f).WaitForCompletion();
         yield return enemyUnit.PlayCaptureAnimation();
         yield return pokeball.transform.DOMoveY(enemyUnit.transform.position.y - 1, 0.5f).WaitForCompletion();
 
-        int shakeCount = TryToCatchPokemon(enemyUnit.Pokemon);
+        int shakeCount = TryToCatchPokemon(enemyUnit.Pokemon, pokeballItem);
 
         for (int i=0; i<Mathf.Min(shakeCount, 3); ++i)
         {
@@ -941,9 +953,9 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private int TryToCatchPokemon(Pokemon pokemon)
+    private int TryToCatchPokemon(Pokemon pokemon, PokeballItem pokeballItem)
     {
-        float a = (3 * pokemon.MaxHp - 2 * pokemon.HP) * pokemon.Base.CatchRate * ConditionsDB.GetStatusBonus(pokemon.Status) / (3 * pokemon.MaxHp);
+        float a = (3 * pokemon.MaxHp - 2 * pokemon.HP) * pokemon.Base.CatchRate * pokeballItem.CatchRateModifier * ConditionsDB.GetStatusBonus(pokemon.Status) / (3 * pokemon.MaxHp);
  
         if (a >= 255)
             return 4;

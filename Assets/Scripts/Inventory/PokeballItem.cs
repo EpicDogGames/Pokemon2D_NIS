@@ -6,8 +6,17 @@ using UnityEngine;
 // this is inheritance from ItemBase and will be a scriptable object as well
 public class PokeballItem : ItemBase
 {
+    [SerializeField] float catchRateModifier = 1;
+
     public override bool Use(Pokemon pokemon)
     {
-        return true;
+        // check to determine if in a battle
+        // if not, if inventory UI pulled up, pokeballs can't be used
+        if (GameController.Instance.State == GameState.Battle)
+            return true;
+
+        return false;
     }
+
+    public float CatchRateModifier => catchRateModifier; 
 }

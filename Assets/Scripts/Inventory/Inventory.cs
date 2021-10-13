@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ItemCategory { Items, Pokeballs, Tms }
+
 public class Inventory : MonoBehaviour
 {
     // 3 types of items
@@ -20,6 +22,7 @@ public class Inventory : MonoBehaviour
         allSlots = new List<List<ItemSlot>>   { slots, pokeballSlots, tmSlots }; 
     }
 
+    // the order should be the same as the enum ItemCategory
     public static List<string> ItemCategories { get; set; } = new List<string>()
     {
         "ITEMS", "POKEBALLS", "TMs & HMs"
