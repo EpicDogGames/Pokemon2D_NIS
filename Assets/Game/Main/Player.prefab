@@ -260,6 +260,12 @@ MonoBehaviour:
     count: 2
   - item: {fileID: 11400000, guid: dcddf33324ed7be41ac9a5fa4cee2767, type: 2}
     count: 4
+  pokeballSlots:
+  - item: {fileID: 11400000, guid: 48817735cb1ab0d46abfbd666679a6a2, type: 2}
+    count: 5
+  - item: {fileID: 11400000, guid: 4ec12aeab014724428a43cdbebafa141, type: 2}
+    count: 2
+  tmSlots: []
 --- !u!1 &8715345361951143062
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] GameObject itemList;
     [SerializeField] ItemSlotUI itemSlotUI;
 
+    [SerializeField] Text categoryText;
     [SerializeField] Image itemIcon;
     [SerializeField] Text itemDescription;
 
@@ -27,7 +28,9 @@ public class InventoryUI : MonoBehaviour
 
     Action onItemUsed; 
 
-    int selectedItem;
+    int selectedItem = 0;
+    int selectedCategory = 0;
+
     InventoryUIState state;
 
     const int itemsInViewport = 8;
@@ -51,12 +54,17 @@ public class InventoryUI : MonoBehaviour
 
     private void UpdateItemList()
     {
+        Debug.Log("Calling UpdateItemList");
         // clear all existing items
         foreach (Transform child in itemList.transform)
             Destroy(child.gameObject);
+
+        // this will reset the selections to the first one of the list
+        // it will be highlighted
+        selectedItem = 0;
         
         slotUIList = new List<ItemSlotUI>();
-        foreach (var itemSlot in inventory.Slots)
+        foreach (var itemSlot in inventory.GetSlotsByCategory(selectedCategory))
         {
             var slotUIObj = Instantiate(itemSlotUI, itemList.transform);
             slotUIObj.SetData(itemSlot);
@@ -74,6 +82,7 @@ public class InventoryUI : MonoBehaviour
         if (state == InventoryUIState.ItemSelection)
         {
             int previousSelection = selectedItem;
+            int previousCategory = selectedCategory;
 
             var gamepadConnected = GameController.Instance.IsGamepadConnected();
             if (gamepadConnected)
@@ -82,6 +91,10 @@ public class InventoryUI : MonoBehaviour
                     ++selectedItem;
                 else if ((Gamepad.current.dpad.up.wasReleasedThisFrame) || (Keyboard.current.upArrowKey.wasReleasedThisFrame))
                     --selectedItem;
+                else if ((Gamepad.current.dpad.right.wasReleasedThisFrame) || (Keyboard.current.rightArrowKey.wasReleasedThisFrame))
+                    ++selectedCategory;
+                else if ((Gamepad.current.dpad.left.wasReleasedThisFrame) || (Keyboard.current.leftArrowKey.wasReleasedThisFrame))
+                    --selectedCategory; 
             }
             else
             {
@@ -89,12 +102,29 @@ public class InventoryUI : MonoBehaviour
                     ++selectedItem;
                 else if (Keyboard.current.upArrowKey.wasReleasedThisFrame)
                     --selectedItem;
+                else if (Keyboard.current.rightArrowKey.wasReleasedThisFrame)
+                    ++selectedCategory;
+                else if (Keyboard.current.leftArrowKey.wasReleasedThisFrame)
+                    --selectedCategory;
             }
 
-            selectedItem = Mathf.Clamp(selectedItem, 0, inventory.Slots.Count - 1);
+            //selectedCategory = Mathf.Clamp(selectedCategory, 0, Inventory.ItemCategories.Count - 1);
+            if (selectedCategory > Inventory.ItemCategories.Count - 1)
+                selectedCategory = 0;
+            else if (selectedCategory < 0)
+                selectedCategory = Inventory.ItemCategories.Count - 1;
+            selectedItem = Mathf.Clamp(selectedItem, 0, inventory.GetSlotsByCategory(selectedCategory).Count - 1);
 
-            if (previousSelection != selectedItem)
+            if (previousCategory != selectedCategory)
+            {
+                ResetSelection();
+                categoryText.text = Inventory.ItemCategories[selectedCategory];
+                UpdateItemList();
+            }
+            else if (previousSelection != selectedItem)
+            {
                 UpdateItemSelection();
+            }
 
             if (gamepadConnected)
             {
@@ -137,6 +167,10 @@ public class InventoryUI : MonoBehaviour
 
     void UpdateItemSelection()
     {
+        var slots = inventory.GetSlotsByCategory(selectedCategory);
+
+        selectedItem = Mathf.Clamp(selectedItem, 0, slots.Count - 1);
+
         for (int i = 0; i < slotUIList.Count; i++)
         {
             if (i == selectedItem)
@@ -153,11 +187,12 @@ public class InventoryUI : MonoBehaviour
             }
         }
 
-        selectedItem = Mathf.Clamp(selectedItem, 0, inventory.Slots.Count - 1);
-
-        var item = inventory.Slots[selectedItem].Item;
-        itemIcon.sprite = item.Icon;
-        itemDescription.text = item.Description;
+        if (slots.Count > 0) 
+        {
+            var item = slots[selectedItem].Item;
+            itemIcon.sprite = item.Icon;
+            itemDescription.text = item.Description;
+        }
 
         HandleScrolling();
     }
@@ -176,6 +211,17 @@ public class InventoryUI : MonoBehaviour
         downArrow.gameObject.SetActive(showDownArrow);
     }
 
+    void ResetSelection()
+    {
+        selectedItem = 0;
+
+        upArrow.gameObject.SetActive(false);
+        downArrow.gameObject.SetActive(false);
+
+        itemIcon.sprite = null;
+        itemDescription.text = "";
+    }
+
     void OpenPartyScreen()
     {
         state = InventoryUIState.PartySelection;
@@ -192,7 +238,7 @@ public class InventoryUI : MonoBehaviour
     {
         state = InventoryUIState.Busy;
 
-        var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember);
+        var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember, selectedCategory);
         if (usedItem != null)
         {
             yield return DialogueManager.Instance.ShowDialogueText($"The player used {usedItem.Name}");
