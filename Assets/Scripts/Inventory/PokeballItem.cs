@@ -10,13 +10,10 @@ public class PokeballItem : ItemBase
 
     public override bool Use(Pokemon pokemon)
     {
-        // check to determine if in a battle
-        // if not, if inventory UI pulled up, pokeballs can't be used
-        if (GameController.Instance.State == GameState.Battle)
-            return true;
-
-        return false;
+        return true;
     }
+
+    public override bool CanUseOutsideBattle => false;
 
     public float CatchRateModifier => catchRateModifier; 
 }

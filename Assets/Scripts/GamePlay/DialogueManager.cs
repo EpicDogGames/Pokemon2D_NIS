@@ -29,7 +29,13 @@ public class DialogueManager : MonoBehaviour
         Instance = this;    
     }
 
-    public IEnumerator ShowDialogueText(string text, bool waitForInput=true) 
+    public void CloseDialogue()
+    {
+        dialogueBox.SetActive(false);
+        IsShowing = false;   
+    }
+
+    public IEnumerator ShowDialogueText(string text, bool waitForInput=true, bool autoClose=true) 
     {
         IsShowing = true;
         dialogueBox.SetActive(true);  
@@ -44,8 +50,10 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitUntil(() => (Keyboard.current.enterKey.wasReleasedThisFrame));
         }
 
-        dialogueBox.SetActive(false);
-        IsShowing = false;
+        if (autoClose)
+        {
+            CloseDialogue();
+        }
     }
 
     public IEnumerator ShowDialogue(Dialogue dialogue, Action OnFinished=null)

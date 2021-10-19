@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public enum InventoryUIState { ItemSelection, PartySelection, Busy }
+public enum InventoryUIState { ItemSelection, PartySelection, MoveToForget, Busy }
 
 public class InventoryUI : MonoBehaviour
 {
@@ -25,11 +26,14 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Color unselectedImageColor;
 
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] MoveSelectionUI moveSelectionUI;
 
     Action<ItemBase> onItemUsed; 
 
     int selectedItem = 0;
     int selectedCategory = 0;
+
+    MoveBase moveToLearn;
 
     InventoryUIState state;
 
@@ -108,7 +112,6 @@ public class InventoryUI : MonoBehaviour
                     --selectedCategory;
             }
 
-            //selectedCategory = Mathf.Clamp(selectedCategory, 0, Inventory.ItemCategories.Count - 1);
             if (selectedCategory > Inventory.ItemCategories.Count - 1)
                 selectedCategory = 0;
             else if (selectedCategory < 0)
@@ -130,7 +133,7 @@ public class InventoryUI : MonoBehaviour
             {
                 if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
                 {
-                    ItemSelected();
+                    StartCoroutine(ItemSelected());
                 }
                 else if ((Gamepad.current.buttonEast.wasReleasedThisFrame) || (Keyboard.current.escapeKey.wasReleasedThisFrame))
                 {
@@ -141,7 +144,7 @@ public class InventoryUI : MonoBehaviour
             {
                 if (Keyboard.current.enterKey.wasReleasedThisFrame)
                 {
-                    ItemSelected();
+                    StartCoroutine(ItemSelected());
                 }
                 else if (Keyboard.current.escapeKey.wasReleasedThisFrame)
                 {
@@ -162,6 +165,15 @@ public class InventoryUI : MonoBehaviour
             };
 
             partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
+        }
+        else if (state == InventoryUIState.MoveToForget)
+        {
+            Action<int> onMoveSelected = (int moveIndex) =>
+            {
+                StartCoroutine(OnMoveToForgetSelected(moveIndex));
+            };
+
+            moveSelectionUI.HandleMoveSelection(onMoveSelected);
         }
     }
 
@@ -222,18 +234,6 @@ public class InventoryUI : MonoBehaviour
         itemDescription.text = "";
     }
 
-    void ItemSelected()
-    {
-        if (selectedCategory == (int)ItemCategory.Pokeballs)
-        {
-            StartCoroutine(UseItem());
-        }
-        else
-        {
-            OpenPartyScreen();
-        }
-    }
-
     void OpenPartyScreen()
     {
         state = InventoryUIState.PartySelection;
@@ -243,26 +243,144 @@ public class InventoryUI : MonoBehaviour
     void ClosePartyScreen()
     {
         state = InventoryUIState.ItemSelection;
+        partyScreen.ClearMemberSlotMessage();
         partyScreen.gameObject.SetActive(false);
+    }
+
+    private IEnumerator ItemSelected()
+    {
+        state = InventoryUIState.Busy;
+
+        var item = inventory.GetItem(selectedItem, selectedCategory);
+
+        if (GameController.Instance.State == GameState.Battle)
+        {
+            // in a battle
+            if (!item.CanUseInBattle)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"This item cannot be used in battle");
+                state = InventoryUIState.ItemSelection;
+                yield break;
+            }
+        }
+        else
+        {
+            // outside battle
+            if (!item.CanUseOutsideBattle)
+            {
+                yield return DialogueManager.Instance.ShowDialogueText($"This item cannot be used outside battle");
+                state = InventoryUIState.ItemSelection;
+                yield break;
+            }
+        }
+
+        if (selectedCategory == (int)ItemCategory.Pokeballs)
+        {
+            StartCoroutine(UseItem());
+        }
+        else
+        {
+            OpenPartyScreen();
+
+            if (item is TMItem)
+            {
+                // show TM is usable
+                partyScreen.ShowIfTMIsUsable(item as TMItem);
+            }
+        }
     }
 
     private IEnumerator UseItem()
     {
         state = InventoryUIState.Busy;
 
+        yield return HandleTMItems();
+
         var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember, selectedCategory);
+        Debug.Log($"Used Item: {usedItem}");
         if (usedItem != null)
         {
-            if (!usedItem is PokeballItem)
+            if (usedItem is RecoveryItem)
                 yield return DialogueManager.Instance.ShowDialogueText($"The player used {usedItem.Name}");
 
             onItemUsed?.Invoke(usedItem);
         }
         else
         {
-            yield return DialogueManager.Instance.ShowDialogueText($"It won't have any affect!");            
+            //if (usedItem is RecoveryItem)  .. this is not working according to the video (#62) as it will not show even for a recovery item
+                yield return DialogueManager.Instance.ShowDialogueText($"It won't have any affect!");            
         }
 
         ClosePartyScreen();
+    }
+
+    private IEnumerator HandleTMItems()
+    {
+        // cast instead of using is (tmItem is TMItem)
+        var tmItem = inventory.GetItem(selectedItem, selectedCategory) as TMItem;
+        if (tmItem == null)
+            yield break;
+
+        var pokemon = partyScreen.SelectedMember;
+
+        if (pokemon.HasMove(tmItem.Move))
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} already knows {tmItem.Move.Name}");
+            yield break;            
+        }
+
+        if (!tmItem.CanBeTaught(pokemon))
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} cant learn {tmItem.Move.Name}");          
+            yield break;
+        }
+
+        if (pokemon.Moves.Count < PokemonBase.MaxNumOfMoves)
+        {
+            pokemon.LearnMove(tmItem.Move);
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} learned {tmItem.Move.Name}");
+        }
+        else
+        {
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} is trying to learn {tmItem.Move.Name}");
+            yield return DialogueManager.Instance.ShowDialogueText($"But it cannot learn more than {PokemonBase.MaxNumOfMoves}"); 
+            yield return ChooseMoveToForget(pokemon, tmItem.Move);
+            yield return new WaitUntil(() => state != InventoryUIState.MoveToForget);       
+        }
+    }
+
+    private IEnumerator ChooseMoveToForget(Pokemon pokemon, MoveBase newMove)
+    {
+        state = InventoryUIState.Busy;
+        yield return DialogueManager.Instance.ShowDialogueText($"Choose a move you want to forget", true, false);
+        moveSelectionUI.gameObject.SetActive(true);
+        moveSelectionUI.SetMoveData(pokemon.Moves.Select(x => x.Base).ToList(), newMove);
+        moveToLearn = newMove;
+
+        state = InventoryUIState.MoveToForget;
+    }
+
+    private IEnumerator OnMoveToForgetSelected(int moveIndex)
+    {
+        var pokemon = partyScreen.SelectedMember;
+
+        DialogueManager.Instance.CloseDialogue();
+        moveSelectionUI.gameObject.SetActive(false);
+        if (moveIndex == PokemonBase.MaxNumOfMoves)
+        {
+            // don't learn the new move
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} did not learn {moveToLearn.Name}");
+        }
+        else
+        {
+            // forget selected move and learn new move
+            var selectedMove = pokemon.Moves[moveIndex].Base;
+            yield return DialogueManager.Instance.ShowDialogueText($"{pokemon.Base.Name} forgot {selectedMove.Name} and learned {moveToLearn.Name}");
+
+            pokemon.Moves[moveIndex] = new Move(moveToLearn);
+        }
+
+        moveToLearn = null;
+        state = InventoryUIState.ItemSelection;
     }
 }

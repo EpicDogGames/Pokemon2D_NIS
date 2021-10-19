@@ -247,25 +247,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c9b925990be444e8fa5f31565593de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slots:
+  itemSlots:
   - item: {fileID: 11400000, guid: 42f7b4bad1a9746428f7b58635d7325d, type: 2}
     count: 5
   - item: {fileID: 11400000, guid: 03e4b8b7d71989847acd7cbfee97ff28, type: 2}
-    count: 2
+    count: 3
   - item: {fileID: 11400000, guid: 1edb1aedbed4b1e409e97be167f88a38, type: 2}
     count: 1
-  - item: {fileID: 11400000, guid: f2e65677683107e49aef84ecf37b74ac, type: 2}
-    count: 2
   - item: {fileID: 11400000, guid: 9226e411315ea4c42a829abec44da3ba, type: 2}
     count: 2
+  - item: {fileID: 11400000, guid: f2e65677683107e49aef84ecf37b74ac, type: 2}
+    count: 1
   - item: {fileID: 11400000, guid: dcddf33324ed7be41ac9a5fa4cee2767, type: 2}
     count: 4
+  - item: {fileID: 11400000, guid: 7cfd3ff28f35ea940b9203a5256571a1, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: eaa6446c3bfb33043b0eaf1d2da413fc, type: 2}
+    count: 3
+  - item: {fileID: 11400000, guid: 2518b5b77d25543418d09fc86da27d51, type: 2}
+    count: 1
   pokeballSlots:
   - item: {fileID: 11400000, guid: 48817735cb1ab0d46abfbd666679a6a2, type: 2}
     count: 5
   - item: {fileID: 11400000, guid: 4ec12aeab014724428a43cdbebafa141, type: 2}
     count: 2
-  tmSlots: []
+  tmSlots:
+  - item: {fileID: 11400000, guid: 8e579926ed45f1c4fad89f9dfd8d44b6, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 32d63eb44b3744e48aebb232e787a6e1, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 108e81bc8a1e26840ab873c911d68437, type: 2}
+    count: 2
 --- !u!1 &8715345361951143062
 GameObject:
   m_ObjectHideFlags: 0

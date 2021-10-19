@@ -8,7 +8,7 @@ public class ItemBase : ScriptableObject
     [SerializeField] string description;
     [SerializeField] Sprite icon;
 
-    public string Name => name;
+    public virtual string Name => name;
     // public string Name {
     //     get => name;
     // }   this means the same thing as above
@@ -25,4 +25,9 @@ public class ItemBase : ScriptableObject
     {
         return false;   
     }
+
+    public virtual bool IsReusable => false;
+
+    public virtual bool CanUseInBattle => true;
+    public virtual bool CanUseOutsideBattle => true;
 }

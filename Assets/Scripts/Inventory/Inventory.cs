@@ -9,7 +9,7 @@ public enum ItemCategory { Items, Pokeballs, Tms }
 public class Inventory : MonoBehaviour
 {
     // 3 types of items
-    [SerializeField] List<ItemSlot> slots;
+    [SerializeField] List<ItemSlot> itemSlots;
     [SerializeField] List<ItemSlot> pokeballSlots;
     [SerializeField] List<ItemSlot> tmSlots;
 
@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake() 
     {
-        allSlots = new List<List<ItemSlot>>   { slots, pokeballSlots, tmSlots }; 
+        allSlots = new List<List<ItemSlot>>   { itemSlots, pokeballSlots, tmSlots }; 
     }
 
     // the order should be the same as the enum ItemCategory
@@ -33,15 +33,21 @@ public class Inventory : MonoBehaviour
         return allSlots[categoryIndex];
     }
 
+    public ItemBase GetItem(int itemIndex, int categoryIndex)
+    {
+        var currentSlots = GetSlotsByCategory(categoryIndex);
+        return currentSlots[itemIndex].Item;
+    }
+
     public ItemBase UseItem(int itemIndex, Pokemon selectedPokemon, int selectedCategory)
     {
-        var currentSlots = GetSlotsByCategory(selectedCategory);
-
-        var item = currentSlots[itemIndex].Item;
+        var item = GetItem(itemIndex, selectedCategory);
         bool itemUsed = item.Use(selectedPokemon);
+
         if (itemUsed)
         {
-            RemoveItem(item, selectedCategory);
+            if (!item.IsReusable)
+                RemoveItem(item, selectedCategory);
             return item;
         }
 
@@ -55,7 +61,7 @@ public class Inventory : MonoBehaviour
         var itemSlot = currentSlots.First(slot => slot.Item == item); 
         itemSlot.Count--;
         if (itemSlot.Count == 0)
-            slots.Remove(itemSlot);  
+            currentSlots.Remove(itemSlot);  
 
         OnUpdated?.Invoke();
     }

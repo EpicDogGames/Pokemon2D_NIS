@@ -8,9 +8,9 @@ public class PartyMemberUI : MonoBehaviour
     [SerializeField] Text nameText;
     [SerializeField] Text lvlText;
     [SerializeField] HPBar hpBar;
+    [SerializeField] Text messageText;
     [SerializeField] Image selectUnselectBackground;
 
-    //[SerializeField] Color highlightedColor;
     [SerializeField] Color selectedTextColor;
     [SerializeField] Color unselectedTextColor;
     [SerializeField] Color selectedImageColor;
@@ -31,6 +31,7 @@ public class PartyMemberUI : MonoBehaviour
         nameText.text = _pokemon.Base.Name;
         lvlText.text = "Lvl " + _pokemon.Level;
         hpBar.SetHP((float)_pokemon.HP / _pokemon.MaxHp);
+        SetMessage("");
     }
 
     public void SetSelected(bool selected) 
@@ -47,5 +48,10 @@ public class PartyMemberUI : MonoBehaviour
             nameText.color = unselectedTextColor;
             selectUnselectBackground.color = unselectedImageColor;
         }
+    }
+
+    public void SetMessage(string message)
+    {
+        messageText.text = message;
     }
 }

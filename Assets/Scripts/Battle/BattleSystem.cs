@@ -109,7 +109,7 @@ public class BattleSystem : MonoBehaviour
                 {
                     // forget selected move and learn new move
                     var selectedMove = playerUnit.Pokemon.Moves[moveIndex].Base;
-                    StartCoroutine(dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} forget {selectedMove.Name} and learned {moveToLearn.Name}"));
+                    StartCoroutine(dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} forgot {selectedMove.Name} and learned {moveToLearn.Name}"));
 
                     playerUnit.Pokemon.Moves[moveIndex] = new Move(moveToLearn);
                 }
@@ -858,7 +858,7 @@ public class BattleSystem : MonoBehaviour
                     if (playerUnit.Pokemon.Moves.Count < PokemonBase.MaxNumOfMoves)
                     {
                         // learn a new move
-                        playerUnit.Pokemon.LearnMove(newMove);
+                        playerUnit.Pokemon.LearnMove(newMove.Base);
                         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} learned {newMove.Base.Name}");
                         dialogBox.SetMoveNames(playerUnit.Pokemon.Moves);
                     }
