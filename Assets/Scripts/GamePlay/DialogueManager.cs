@@ -11,8 +11,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Text dialogueText;
     [SerializeField] float lettersPerSecond;
 
-    bool gamepadConnected;
-
     public bool IsShowing { get; private set; }
 
     public event Action OnShowDialogue;
@@ -23,17 +21,13 @@ public class DialogueManager : MonoBehaviour
     private void Awake() 
     {
         Instance = this;
-        gamepadConnected = GameController.Instance.IsGamepadConnected();
-    }
-
-    public void CloseDialogue()
-    {
-        dialogueBox.SetActive(false);
-        IsShowing = false;   
     }
 
     public IEnumerator ShowDialogueText(string text, bool waitForInput=true, bool autoClose=true) 
     {
+        OnShowDialogue?.Invoke();
+
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
         IsShowing = true;
         dialogueBox.SetActive(true);  
 
@@ -52,8 +46,16 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void CloseDialogue()
+    {
+        dialogueBox.SetActive(false);
+        IsShowing = false;
+        OnCloseDialogue?.Invoke();
+    }
+
     public IEnumerator ShowDialogue(Dialogue dialogue)
     {
+        var gamepadConnected = GameController.Instance.IsGamepadConnected();
         yield return new WaitForEndOfFrame();
 
         OnShowDialogue?.Invoke();
