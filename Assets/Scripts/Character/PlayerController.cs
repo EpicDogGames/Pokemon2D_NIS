@@ -47,19 +47,19 @@ public class PlayerController : MonoBehaviour, ISavable
         {
             if ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame))
             {
-                Interact();   
+                StartCoroutine(Interact());   
             }
         }
         else
         {
             if (Keyboard.current.enterKey.wasReleasedThisFrame)
             {
-                Interact();
+               StartCoroutine(Interact());
             }    
         }
     }
 
-    private void Interact()
+    private IEnumerator Interact()
     {
         var facingDir = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
         var interactPos = transform.position + facingDir;
@@ -69,8 +69,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.Instance.InteractableLayer);
         if (collider != null)
         {
-            //collider.GetComponent<NPCController>()?.Interact(transform);
-            collider.GetComponent<Interactable>()?.Interact(transform);
+            yield return collider.GetComponent<Interactable>()?.Interact(transform);
         }
     }
 

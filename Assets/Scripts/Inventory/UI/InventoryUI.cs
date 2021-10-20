@@ -297,7 +297,6 @@ public class InventoryUI : MonoBehaviour
         yield return HandleTMItems();
 
         var usedItem = inventory.UseItem(selectedItem, partyScreen.SelectedMember, selectedCategory);
-        Debug.Log($"Used Item: {usedItem}");
         if (usedItem != null)
         {
             if (usedItem is RecoveryItem)
@@ -307,7 +306,7 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            //if (usedItem is RecoveryItem)  .. this is not working according to the video (#62) as it will not show even for a recovery item
+            if (selectedCategory == (int)ItemCategory.Items)
                 yield return DialogueManager.Instance.ShowDialogueText($"It won't have any affect!");            
         }
 

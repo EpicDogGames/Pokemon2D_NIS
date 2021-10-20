@@ -30,20 +30,18 @@ public class TrainerController : MonoBehaviour, Interactable, ISavable
         character.HandleUpdate();    
     }
 
-    public void Interact(Transform initiator)
+    public IEnumerator Interact(Transform initiator)
     {
         character.LookTowards(initiator.position);
 
         if (!battleLost)
         {
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () => 
-            {
-               GameController.Instance.StartTrainerBattle(this);
-            })); 
+            yield return DialogueManager.Instance.ShowDialogue(dialogue);
+            GameController.Instance.StartTrainerBattle(this); 
         } 
         else
         {
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogueAfterBattle));
+           yield return DialogueManager.Instance.ShowDialogue(dialogueAfterBattle);
         }         
     }
 
@@ -81,10 +79,8 @@ public class TrainerController : MonoBehaviour, Interactable, ISavable
         yield return character.Move(moveVector);
 
         // show dialog
-        StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () => 
-        {
-            GameController.Instance.StartTrainerBattle(this);
-        }));
+        yield return DialogueManager.Instance.ShowDialogue(dialogue);
+        GameController.Instance.StartTrainerBattle(this);
     }
 
     public string Name {

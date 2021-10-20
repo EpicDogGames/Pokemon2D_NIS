@@ -11,11 +11,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Text dialogueText;
     [SerializeField] float lettersPerSecond;
 
-    Dialogue dialogue;
-    Action OnDialogueFinished;
-
-    int currentLine = 0;
-    bool isTyping;
+    bool gamepadConnected;
 
     public bool IsShowing { get; private set; }
 
@@ -26,7 +22,8 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake() 
     {
-        Instance = this;    
+        Instance = this;
+        gamepadConnected = GameController.Instance.IsGamepadConnected();
     }
 
     public void CloseDialogue()
@@ -43,7 +40,6 @@ public class DialogueManager : MonoBehaviour
         yield return TypeDialogue(text);
         if (waitForInput)
         {
-            var gamepadConnected = GameController.Instance.IsGamepadConnected();
             if (gamepadConnected)
                 yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
             else
@@ -56,72 +52,40 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue, Action OnFinished=null)
+    public IEnumerator ShowDialogue(Dialogue dialogue)
     {
         yield return new WaitForEndOfFrame();
 
         OnShowDialogue?.Invoke();
-
         IsShowing = true;
-        this.dialogue = dialogue;
-        OnDialogueFinished = OnFinished;
-
         dialogueBox.SetActive(true);
-        StartCoroutine(TypeDialogue(dialogue.Lines[0]));
+
+        foreach (var line in dialogue.Lines)
+        {
+            yield return TypeDialogue(line);
+            if (gamepadConnected)
+                yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
+            else
+                yield return new WaitUntil(() => (Keyboard.current.enterKey.wasReleasedThisFrame));   
+        }
+
+        dialogueBox.SetActive(false);
+        IsShowing = false;
+        OnCloseDialogue?.Invoke();
     }
 
     public void HandleUpdate()
     {
-        var gamepadConnected = GameController.Instance.IsGamepadConnected();
-        if (gamepadConnected)
-        {        
-            if (((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)) && !isTyping)
-            {
-                ++currentLine;
-                if (currentLine < dialogue.Lines.Count)
-                {
-                    StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
-                }
-                else
-                {
-                    currentLine = 0;
-                    IsShowing = false;
-                    dialogueBox.SetActive(false);
-                    OnDialogueFinished?.Invoke();
-                    OnCloseDialogue?.Invoke();
-                }
-            }
-        }
-        else
-        {
-            if (((Keyboard.current.enterKey.wasReleasedThisFrame)) && !isTyping)
-            {
-                ++currentLine;
-                if (currentLine < dialogue.Lines.Count)
-                {
-                    StartCoroutine(TypeDialogue(dialogue.Lines[currentLine]));
-                }
-                else
-                {
-                    currentLine = 0;
-                    IsShowing = false;
-                    dialogueBox.SetActive(false);
-                    OnDialogueFinished?.Invoke();
-                    OnCloseDialogue?.Invoke();
-                }
-            }
-        }
+
     }
 
     public IEnumerator TypeDialogue(string line)
     {
-        isTyping = true;
         dialogueText.text = "";
         foreach (var letter in line.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(1f/lettersPerSecond);
         }
-        isTyping = false;
     }
 }
