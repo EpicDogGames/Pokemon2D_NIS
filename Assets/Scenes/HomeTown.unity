@@ -8179,6 +8179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 1edb1aedbed4b1e409e97be167f88a38, type: 2}
+  numberOfItems: 4
 --- !u!61 &908258271
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9188,6 +9189,27 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 48817735cb1ab0d46abfbd666679a6a2,
+        type: 2}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: I bought some pokeballs from the market
+      objectReference: {fileID: 0}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[1]
+      value: You can have one
+      objectReference: {fileID: 0}
     - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
         type: 3}
       propertyPath: m_RootOrder
@@ -9257,6 +9279,32 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 48817735cb1ab0d46abfbd666679a6a2,
+        type: 2}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: count
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: I bought some pokeballs at a market in the next town.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[1]
+      value: You can have some.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa94f6532c1a0b246bba2c668da2e4ac, type: 3}

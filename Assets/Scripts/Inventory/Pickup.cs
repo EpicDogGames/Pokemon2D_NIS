@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pickup : MonoBehaviour, Interactable
 {
     [SerializeField] ItemBase item;
+    [SerializeField] int numberOfItems;
 
     public bool Used { get; set; } = false;
 
@@ -12,7 +13,7 @@ public class Pickup : MonoBehaviour, Interactable
     {
         if (!Used)
         {
-            initiator.GetComponent<Inventory>().AddItem(item);
+            initiator.GetComponent<Inventory>().AddItem(item, numberOfItems);
 
             Used = true;
             
@@ -20,7 +21,9 @@ public class Pickup : MonoBehaviour, Interactable
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
 
-            yield return DialogueManager.Instance.ShowDialogueText($"Player found {item.Name}");
+            string playerName = initiator.GetComponent<PlayerController>().Name;
+
+            yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {item.Name}");
         }
     }
 }
