@@ -38,7 +38,8 @@ public class GameController : MonoBehaviour
 
         PokemonDB.Init();
         MoveDB.Init();
-        ConditionsDB.Init();    
+        ConditionsDB.Init(); 
+        ItemDB.Init();   
     }
 
     private void Start() 
@@ -53,7 +54,7 @@ public class GameController : MonoBehaviour
             state = GameState.Dialogue;
         };
 
-        DialogueManager.Instance.OnCloseDialogue += () =>
+        DialogueManager.Instance.OnDialogueFinished += () =>
         {
             if (state == GameState.Dialogue)
                 state = prevState;

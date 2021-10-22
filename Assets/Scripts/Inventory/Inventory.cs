@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum ItemCategory { Items, Pokeballs, Tms }
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISavable
 {
     // 3 types of items
     [SerializeField] List<ItemSlot> itemSlots;
@@ -103,6 +103,30 @@ public class Inventory : MonoBehaviour
     {
         return FindObjectOfType<PlayerController>().GetComponent<Inventory>();    
     }
+
+    public object CaptureState()
+    {
+        var saveData = new InventorySaveData()
+        {
+            items = itemSlots.Select(i => i.GetSaveData()).ToList(),
+            pokeballs = pokeballSlots.Select(i => i.GetSaveData()).ToList(),
+            tms = tmSlots.Select(i => i.GetSaveData()).ToList(),
+        };
+        return saveData;
+    }
+
+    public void RestoreState(object state)
+    {
+        var saveData = state as InventorySaveData;
+
+        itemSlots = saveData.items.Select(i => new ItemSlot(i)).ToList();
+        pokeballSlots = saveData.pokeballs.Select(i => new ItemSlot(i)).ToList();
+        tmSlots = saveData.tms.Select(i => new ItemSlot(i)).ToList();
+
+        allSlots = new List<List<ItemSlot>> { itemSlots, pokeballSlots, tmSlots };
+
+        OnUpdated?.Invoke();
+    }
 }
 
 [System.Serializable]
@@ -110,6 +134,28 @@ public class ItemSlot
 {
     [SerializeField] ItemBase item;
     [SerializeField] int count;
+
+    public ItemSlot()
+    {
+        
+    }
+
+    public ItemSlot(ItemSaveData saveData)
+    {
+        item = ItemDB.GetItemByName(saveData.name);
+        count = saveData.count;
+    }
+
+    public ItemSaveData GetSaveData()
+    {
+        var saveData = new ItemSaveData()
+        {
+            name = item.Name,
+            count = count
+        };
+
+        return saveData;
+    }
 
     public ItemBase Item {
         get => item;
@@ -119,4 +165,19 @@ public class ItemSlot
         get => count;
         set => count = value;
     }
+}
+
+[System.Serializable]
+public class ItemSaveData                   // similar to pokemon and move saves, just save the name and count instead of the whole itembase
+{
+    public string name;
+    public int count;
+}
+
+[System.Serializable]
+public class InventorySaveData              // can't save the 3 lists of the inventory, must use this
+{
+    public List<ItemSaveData> items;
+    public List<ItemSaveData> pokeballs;
+    public List<ItemSaveData> tms;
 }

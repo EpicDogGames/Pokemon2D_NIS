@@ -58,7 +58,6 @@ public class InventoryUI : MonoBehaviour
 
     private void UpdateItemList()
     {
-        Debug.Log("Calling UpdateItemList");
         // clear all existing items
         foreach (Transform child in itemList.transform)
             Destroy(child.gameObject);

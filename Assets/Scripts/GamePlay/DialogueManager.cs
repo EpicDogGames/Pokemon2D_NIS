@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     public bool IsShowing { get; private set; }
 
     public event Action OnShowDialogue;
-    public event Action OnCloseDialogue;
+    public event Action OnDialogueFinished;
 
     public static DialogueManager Instance { get; private set; }
 
@@ -44,13 +44,14 @@ public class DialogueManager : MonoBehaviour
         {
             CloseDialogue();
         }
+                OnDialogueFinished?.Invoke();
     }
 
     public void CloseDialogue()
     {
         dialogueBox.SetActive(false);
         IsShowing = false;
-        OnCloseDialogue?.Invoke();
+
     }
 
     public IEnumerator ShowDialogue(Dialogue dialogue)
@@ -73,7 +74,7 @@ public class DialogueManager : MonoBehaviour
 
         dialogueBox.SetActive(false);
         IsShowing = false;
-        OnCloseDialogue?.Invoke();
+        OnDialogueFinished?.Invoke();
     }
 
     public void HandleUpdate()

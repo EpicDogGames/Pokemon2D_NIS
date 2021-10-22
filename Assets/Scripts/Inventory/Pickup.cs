@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickup : MonoBehaviour, Interactable
+public class Pickup : MonoBehaviour, Interactable, ISavable
 {
     [SerializeField] ItemBase item;
-    [SerializeField] int numberOfItems;
+    [SerializeField] int numberOfItems = 1;
 
     public bool Used { get; set; } = false;
 
@@ -24,6 +24,22 @@ public class Pickup : MonoBehaviour, Interactable
             string playerName = initiator.GetComponent<PlayerController>().Name;
 
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {item.Name}");
+        }
+    }
+
+    public object CaptureState()
+    {
+        return Used;
+    }
+
+    public void RestoreState(object state)
+    {
+        Used = (bool)state;
+        if (Used)
+        {
+            // instead of destroying the object, just making disabling it
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;            
         }
     }
 }
