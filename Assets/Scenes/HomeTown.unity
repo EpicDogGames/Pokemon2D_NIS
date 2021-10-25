@@ -2885,7 +2885,7 @@ PrefabInstance:
     - target: {fileID: 4679295586153847287, guid: 29d1bd87270de834fb5fd34ece22a5df,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4679295586153847287, guid: 29d1bd87270de834fb5fd34ece22a5df,
         type: 3}
@@ -8218,8 +8218,164 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1351267630
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 48817735cb1ab0d46abfbd666679a6a2,
+        type: 2}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: I bought some pokeballs from the market
+      objectReference: {fileID: 0}
+    - target: {fileID: 227830935157165186, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[1]
+      value: You can have one
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: questToStart
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d2b72cbc1ead094cbe3c2d6ca5cac64,
+        type: 2}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: timeBetweenPattern
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: movementPattern.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: You can use HM01 to cut.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777903, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777903, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: count
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: I bought some pokeballs at a market in the next town.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219310208977168774, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[1]
+      value: You can have some.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182186924294260362, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: uniqueId
+      value: 75292342-3cf6-478c-8fcb-4ad834eacb24
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa94f6532c1a0b246bba2c668da2e4ac, type: 3}
 --- !u!1 &2123564769
 GameObject:
   m_ObjectHideFlags: 0
@@ -9286,12 +9442,12 @@ PrefabInstance:
     - target: {fileID: 5717467632238457898, guid: 68470a18f993e6044abb4d725325e51a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5717467632238457898, guid: 68470a18f993e6044abb4d725325e51a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.7
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 5717467632238457898, guid: 68470a18f993e6044abb4d725325e51a,
         type: 3}
@@ -9441,7 +9597,7 @@ PrefabInstance:
         type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 1edb1aedbed4b1e409e97be167f88a38,
+      objectReference: {fileID: 11400000, guid: eaa6446c3bfb33043b0eaf1d2da413fc,
         type: 2}
     - target: {fileID: 6174782071453963296, guid: 29c2e09227c97ee44ac57278b2c48e77,
         type: 3}
@@ -9451,7 +9607,7 @@ PrefabInstance:
     - target: {fileID: 7955126052848597393, guid: 29c2e09227c97ee44ac57278b2c48e77,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7955126052848597393, guid: 29c2e09227c97ee44ac57278b2c48e77,
         type: 3}
@@ -9461,7 +9617,7 @@ PrefabInstance:
     - target: {fileID: 7955126052848597393, guid: 29c2e09227c97ee44ac57278b2c48e77,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: 7.8
       objectReference: {fileID: 0}
     - target: {fileID: 7955126052848597393, guid: 29c2e09227c97ee44ac57278b2c48e77,
         type: 3}
