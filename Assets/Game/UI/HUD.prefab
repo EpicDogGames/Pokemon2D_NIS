@@ -496,6 +496,7 @@ MonoBehaviour:
   lvlText: {fileID: 8236495558062481929}
   statusText: {fileID: 4692268461629388964}
   hpBar: {fileID: 8236495557531608564}
+  expBar: {fileID: 0}
   psnColor: {r: 0.9622642, g: 0.040850822, b: 0.89738417, a: 1}
   brnColor: {r: 0.9150943, g: 0.42814314, b: 0.06474723, a: 1}
   frzColor: {r: 0.3584906, g: 0.23602706, b: 0.14035244, a: 1}
