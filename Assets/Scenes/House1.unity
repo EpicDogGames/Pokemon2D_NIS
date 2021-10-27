@@ -123,6 +123,101 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &102959352
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -29.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777684, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: questToComplete
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d28c98d750431e4d815d11cfe5d4cef,
+        type: 2}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: movementPattern.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777896, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: Now you can battle the wild pokemons in  the grass.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012039134169777903, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182186924294260362, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+        type: 3}
+      propertyPath: uniqueId
+      value: 2d6b79ea-a9b9-470e-bd51-04e1ae1b97ce
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fa94f6532c1a0b246bba2c668da2e4ac, type: 3}
 --- !u!1 &233991005
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +480,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29d1bd87270de834fb5fd34ece22a5df, type: 3}
+--- !u!1 &757016201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3012039134169777903, guid: fa94f6532c1a0b246bba2c668da2e4ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 102959352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &757016202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757016201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983bb1fa7ba23a047b84336a8c71a30c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemonToGive:
+    _base: {fileID: 11400000, guid: 0d612b0ac0680494e9113a67b10aa719, type: 2}
+    level: 5
+  dialogue:
+    lines:
+    - It is dangerous to go out there without a pokemon.
+    - You can have this Charmander.
 --- !u!1001 &991525897
 PrefabInstance:
   m_ObjectHideFlags: 0
