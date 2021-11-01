@@ -15,7 +15,7 @@ public class Move
 
     public Move(MoveSaveData saveData)
     {
-        Base = MoveDB.GetMoveByName(saveData.name);
+        Base = MoveDB.GetObjectByName(saveData.name);
         PP = saveData.pp;
     }
 
@@ -23,7 +23,7 @@ public class Move
     {
         var saveData = new MoveSaveData()
         {
-            name = Base.Name,               // have to use Name not name because it will grab the scriptable object's Name field and not the scriptable object's name (like what you see in the folder directory)
+            name = Base.name,               // have to use Name not name because it will grab the scriptable object's Name field and not the scriptable object's name (like what you see in the folder directory)
             pp = PP
         };
 
