@@ -201,6 +201,10 @@ public class GameController : MonoBehaviour
         state = GameState.FreeRoam; 
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);   
+
+        // determine if any of the members of the pokemon party needs to be evolved
+        var playerParty = playerController.GetComponent<PokemonParty>();
+        StartCoroutine(playerParty.CheckForEvolutions());
     }
 
     private void OnMenuSelected(int selectedItem)

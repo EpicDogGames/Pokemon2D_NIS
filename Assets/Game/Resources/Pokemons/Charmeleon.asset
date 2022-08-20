@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5e73bfc01de224f86c4dad3e6335c3, type: 3}
-  m_Name: Charmander
+  m_Name: Charmeleon
   m_EditorClassIdentifier: 
-  name: Charmander
+  name: Charmeleon
   description: 
-  frontSprite: {fileID: 21300000, guid: d6266f4d3d7d7e14a8ca45e1c53f6e6d, type: 3}
-  backSprite: {fileID: 21300000, guid: c0a9af5ce3f5a474bb050d0e541b1c6e, type: 3}
+  frontSprite: {fileID: 21300000, guid: f328d918859c7a340b2f2ba7c420db5a, type: 3}
+  backSprite: {fileID: 21300000, guid: 39e0a845e54c2bb4cae047f068da67ae, type: 3}
   type1: 2
   type2: 0
-  maxHp: 39
-  attack: 52
+  maxHp: 58
+  attack: 64
   defense: 43
-  spAttack: 60
-  spDefense: 50
-  speed: 65
+  spAttack: 80
+  spDefense: 65
+  speed: 80
   expYield: 65
   growthRate: 1
   catchRate: 255
@@ -31,11 +31,11 @@ MonoBehaviour:
   - moveBase: {fileID: 11400000, guid: f3b47194936db754a8bb77e140806043, type: 2}
     level: 1
   - moveBase: {fileID: 11400000, guid: c47cb7d6bf131f14f811012f6482e008, type: 2}
-    level: 4
+    level: 1
   - moveBase: {fileID: 11400000, guid: fd48047f4ce0c7841adf930f7388b385, type: 2}
     level: 7
   - moveBase: {fileID: 11400000, guid: a396ee010a333b14e99aa204881182c6, type: 2}
-    level: 7
+    level: 1
   - moveBase: {fileID: 11400000, guid: 112a2d447de343f4fadcc44630b4261a, type: 2}
     level: 13
   learnableByItems:
@@ -43,6 +43,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f929e6cd7b685a5488f4acb48a9d0de3, type: 2}
   - {fileID: 11400000, guid: 112a2d447de343f4fadcc44630b4261a, type: 2}
   - {fileID: 11400000, guid: e40de6c0677653641a90e47b894f33a6, type: 2}
-  evolutions:
-  - evolvesInto: {fileID: 11400000, guid: c8a730af764f87d47a5b8c0b53f0278c, type: 2}
-    requiredLevel: 16
+  evolutions: []
