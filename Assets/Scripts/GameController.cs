@@ -74,7 +74,11 @@ public class GameController : MonoBehaviour
             stateBeforeEvolution = state;
             state = GameState.Evolution;
         };
-        EvolutionManager.Instance.OnCompleteEvolution += () => state = stateBeforeEvolution;
+        EvolutionManager.Instance.OnCompleteEvolution += () => 
+        {
+            partyScreen.SetPartyData();
+            state = stateBeforeEvolution;
+        };
     }
 
     private void Update() 
@@ -205,6 +209,8 @@ public class GameController : MonoBehaviour
             trainer.BattleLost();
             trainer = null;
         }
+
+        partyScreen.SetPartyData();
 
         state = GameState.FreeRoam; 
         battleSystem.gameObject.SetActive(false);

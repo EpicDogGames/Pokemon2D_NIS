@@ -59,8 +59,6 @@ public class PokemonParty : MonoBehaviour
                 yield return EvolutionManager.Instance.Evolve(pokemon, evolution);
             }
         }
-
-        OnUpdated?.Invoke();
     }
 
     public static PokemonParty GetPlayerParty()
