@@ -65,4 +65,9 @@ public class PokemonParty : MonoBehaviour
     {
         return FindObjectOfType<PlayerController>().GetComponent<PokemonParty>();
     }
+
+    public void PartyUpdated()
+    {
+        OnUpdated?.Invoke();
+    }
 }

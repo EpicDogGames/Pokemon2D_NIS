@@ -117,7 +117,8 @@ public class Pokemon
         MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10 + Level;
 
         // accounts for evolution and recalculating the HP to new evolution
-        HP += MaxHp - oldMaxHP;
+        if (oldMaxHP != 0)
+            HP += MaxHp - oldMaxHP;
     }
 
     private void ResetStatBoost()
@@ -357,6 +358,12 @@ public class Pokemon
         // change the species and then recalculate all its stats
         _base = evolution.EvolvesInto;
         CalculateStats();
+    }
+
+    public void Heal()
+    {
+        HP = MaxHp; 
+        OnHPChanged?.Invoke();      // updates HP in any HUD 
     }
 }
 
