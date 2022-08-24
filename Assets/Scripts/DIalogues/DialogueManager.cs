@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] GameObject dialogueBox;
+    [SerializeField] ChoiceBox choiceBox;
     [SerializeField] Text dialogueText;
     [SerializeField] float lettersPerSecond;
 
@@ -54,7 +55,7 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue)
+    public IEnumerator ShowDialogue(Dialogue dialogue, List<string> choices=null, Action<int> onChoiceSelected=null)
     {
         var gamepadConnected = GameController.Instance.IsGamepadConnected();
         yield return new WaitForEndOfFrame();
@@ -70,6 +71,11 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
             else
                 yield return new WaitUntil(() => (Keyboard.current.enterKey.wasReleasedThisFrame));   
+        }
+
+        if (choices != null && choices.Count > 1)
+        {
+            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
         }
 
         dialogueBox.SetActive(false);

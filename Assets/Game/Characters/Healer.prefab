@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     lines:
-    - You look tired. Please take a  rest.
+    - You look tired. Would you like to take a rest?
   questToStart: {fileID: 0}
   questToComplete: {fileID: 0}
   movementPattern: []
