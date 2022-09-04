@@ -47,6 +47,7 @@ public class SceneDetails : MonoBehaviour
     {
         if (!IsLoaded)
         {
+            Debug.Log("Have loaded " + gameObject.name);
             var operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
             IsLoaded = true;
 

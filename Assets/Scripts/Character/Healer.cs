@@ -8,9 +8,9 @@ public class Healer : MonoBehaviour
     {
         int selectedChoice = 0;
 
-        yield return DialogueManager.Instance.ShowDialogue(dialogue, 
-          new List<string>() { "Yes", "No"}, 
-          (choiceIndex) => selectedChoice = choiceIndex);
+        yield return DialogueManager.Instance.ShowDialogueText("You look tired? Would you like to rest here?", 
+          choices: new List<string>() { "Yes please", "No thanks"}, 
+          onChoiceSelected: (choiceIndex) => selectedChoice = choiceIndex);
 
         if (selectedChoice == 0)
         {
@@ -23,12 +23,12 @@ public class Healer : MonoBehaviour
 
             yield return Fader.Instance.FadeOut(0.5f);
 
-            yield return DialogueManager.Instance.ShowDialogueText($"Your pokemon should be fully healed");
+            yield return DialogueManager.Instance.ShowDialogueText($"Your pokemon should be fully healed!");
         } 
         else if (selectedChoice == 1)
         {
             // No
-            yield return DialogueManager.Instance.ShowDialogueText($"Okay! Come back if you change your mind");
+            yield return DialogueManager.Instance.ShowDialogueText($"Okay! Come back if you change your mind.");
         }
     }
 }

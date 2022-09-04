@@ -2875,7 +2875,7 @@ PrefabInstance:
     - target: {fileID: 4679295586153847284, guid: 29d1bd87270de834fb5fd34ece22a5df,
         type: 3}
       propertyPath: m_Name
-      value: LocationPortal
+      value: LocationPortal - House 1
       objectReference: {fileID: 0}
     - target: {fileID: 4679295586153847286, guid: 29d1bd87270de834fb5fd34ece22a5df,
         type: 3}

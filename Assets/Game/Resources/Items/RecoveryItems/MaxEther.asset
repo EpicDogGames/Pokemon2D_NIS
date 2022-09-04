@@ -15,6 +15,8 @@ MonoBehaviour:
   name: Max Ether
   description: Recovers the PP of a Pokemon fully
   icon: {fileID: -159569899486493817, guid: b0c7562d64e0689468b2c8aad376ed09, type: 3}
+  price: 100
+  isSellable: 1
   hpAmount: 0
   restoreMaxHP: 0
   ppAmount: 0

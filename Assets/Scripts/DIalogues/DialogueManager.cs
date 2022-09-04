@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
     }
 
-    public IEnumerator ShowDialogueText(string text, bool waitForInput=true, bool autoClose=true) 
+    public IEnumerator ShowDialogueText(string text, bool waitForInput=true, bool autoClose=true, List<string> choices = null, Action<int> onChoiceSelected = null) 
     {
         OnShowDialogue?.Invoke();
 
@@ -39,6 +39,11 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
             else
                 yield return new WaitUntil(() => (Keyboard.current.enterKey.wasReleasedThisFrame));
+        }
+
+        if (choices != null && choices.Count > 1)
+        {
+            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
         }
 
         if (autoClose)

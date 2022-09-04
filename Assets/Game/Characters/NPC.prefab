@@ -20,7 +20,7 @@ GameObject:
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -153,6 +153,8 @@ MonoBehaviour:
     lines:
     - Hi, have you tried walking through the long grass?
     - You can find plenty of wild pokemon in that area.
+  questToStart: {fileID: 0}
+  questToComplete: {fileID: 0}
   movementPattern:
   - {x: 4, y: 0}
   - {x: -4, y: 0}

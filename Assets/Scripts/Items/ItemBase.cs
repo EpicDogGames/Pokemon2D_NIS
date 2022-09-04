@@ -7,6 +7,8 @@ public class ItemBase : ScriptableObject
     [SerializeField] string name;
     [SerializeField] string description;
     [SerializeField] Sprite icon;
+    [SerializeField] float price;
+    [SerializeField] bool isSellable;
 
     public virtual string Name => name;
     // public string Name {
@@ -20,6 +22,8 @@ public class ItemBase : ScriptableObject
     // public Sprite Icon {
     //     get => icon;
     // }   this means the same thing as above
+    public float Price => price;
+    public bool IsSellable => isSellable;
 
     public virtual bool Use(Pokemon pokemon)
     {

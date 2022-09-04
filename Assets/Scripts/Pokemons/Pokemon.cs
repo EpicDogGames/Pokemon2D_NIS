@@ -364,6 +364,8 @@ public class Pokemon
     {
         HP = MaxHp; 
         OnHPChanged?.Invoke();      // updates HP in any HUD 
+
+        CureStatus();               // curing status condition of the pokemon as well
     }
 }
 
