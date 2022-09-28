@@ -78,6 +78,8 @@ public class GameController : MonoBehaviour
         {
             partyScreen.SetPartyData();
             state = stateBeforeEvolution;
+
+            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
         };
 
         ShopController.Instance.OnStartShopping += () => state = GameState.Shop;
@@ -225,7 +227,13 @@ public class GameController : MonoBehaviour
 
         // determine if any of the members of the pokemon party needs to be evolved
         var playerParty = playerController.GetComponent<PokemonParty>();
-        StartCoroutine(playerParty.CheckForEvolutions());
+        bool hasEvolutions = playerParty.CheckForEvolutions();
+
+        // determine which music clip to be played
+        if (hasEvolutions)
+            StartCoroutine(playerParty.RunEvolutions());
+        else
+            AudioManager.Instance.PlayMusic(CurrentScene.SceneMusic, fade: true);
     }
 
     private void OnMenuSelected(int selectedItem)

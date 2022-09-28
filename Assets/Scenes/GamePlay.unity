@@ -980,6 +980,46 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[1].id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[2].id
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[3].id
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 475fdddb548e1234cb9473a156628efc, type: 3}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: cfa8f7960f48c6c4c94be5a37dfe37b9, type: 3}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a40cae1c9438c78439488b2f89598bef, type: 3}
+    - target: {fileID: 1364529269273403163, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: sfxList.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: d6aa3abd92162384683287804587b431, type: 3}
     - target: {fileID: 1397264690616427426, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3576,6 +3616,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -475
       objectReference: {fileID: 0}
+    - target: {fileID: 6181614546067593768, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: Priority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181614546067593768, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.121
+      objectReference: {fileID: 0}
     - target: {fileID: 6284849170899070009, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4232,6 +4282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629679852765329600, guid: 70c3fded35721164a8db156fe28f5712,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.511
       objectReference: {fileID: 0}
     - target: {fileID: 7632871456950240348, guid: 70c3fded35721164a8db156fe28f5712,
         type: 3}
@@ -5203,6 +5258,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
         type: 3}
+      propertyPath: sceneMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: f7386cceb6586a6439de2fa57b1d5e00, type: 3}
+    - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
+        type: 3}
       propertyPath: connectedScenes.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -5363,6 +5423,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Route1
       objectReference: {fileID: 0}
+    - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
+        type: 3}
+      propertyPath: sceneMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: fe92ff29f04f5204a8af6482b3236e94, type: 3}
     - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
         type: 3}
       propertyPath: connectedScenes.Array.size
@@ -5533,6 +5598,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
+        type: 3}
+      propertyPath: sceneMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 80265296e3c9bbc40afdb9739e295523, type: 3}
     - target: {fileID: 4302844392678841369, guid: ee31f7742f2f9b34e9b8b7358a0a29e0,
         type: 3}
       propertyPath: connectedScenes.Array.size

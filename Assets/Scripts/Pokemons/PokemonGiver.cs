@@ -19,6 +19,8 @@ public class PokemonGiver : MonoBehaviour, ISavable
 
         used = true;
 
+        AudioManager.Instance.PlaySfx(AudioId.PokemonObtained, pauseMusic: true);
+
         dialogueText = $"{player.Name} received {pokemonToGive.Base.Name}";
 
         yield return DialogueManager.Instance.ShowDialogueText(dialogueText);

@@ -23,6 +23,8 @@ public class Pickup : MonoBehaviour, Interactable, ISavable
 
             string playerName = initiator.GetComponent<PlayerController>().Name;
 
+            AudioManager.Instance.PlaySfx(AudioId.ItemObtained, pauseMusic: true);
+
             yield return DialogueManager.Instance.ShowDialogueText($"{playerName} found {item.Name}");
         }
     }

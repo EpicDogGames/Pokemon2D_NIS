@@ -30,7 +30,9 @@ public class DialogueManager : MonoBehaviour
 
         var gamepadConnected = GameController.Instance.IsGamepadConnected();
         IsShowing = true;
-        dialogueBox.SetActive(true);  
+        dialogueBox.SetActive(true); 
+
+        AudioManager.Instance.PlaySfx(AudioId.UISelect); 
 
         yield return TypeDialogue(text);
         if (waitForInput)
@@ -71,6 +73,7 @@ public class DialogueManager : MonoBehaviour
 
         foreach (var line in dialogue.Lines)
         {
+            AudioManager.Instance.PlaySfx(AudioId.UISelect);
             yield return TypeDialogue(line);
             if (gamepadConnected)
                 yield return new WaitUntil(() => ((Gamepad.current.buttonSouth.wasReleasedThisFrame) || (Keyboard.current.enterKey.wasReleasedThisFrame)));
