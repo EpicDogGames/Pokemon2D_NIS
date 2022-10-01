@@ -51,3 +51,10 @@
 |Episode 72     | Saving Quests                                                                                                                         |
 |Episode 73     | Evolutions                                                                                                                            |
 |Episode 74     | Evolutions UI                                                                                                                         |
+|Episode 75     | Evolution Items                                                                                                                       |
+|Episode 76     | Bug Fixes in Evolution & Level Up                                                                                                     |
+|Episode 77     | Healing Pokemon                                                                                                                       |
+|Episode 78     | Dialogue Choices                                                                                                                      |
+|Episodes 79-84 | Shop System - Buying and Selling with UI                                                                                              |
+|Episodes 85-87 | Audio System - Music and Sound Effects                                                                                                |
+|Episodes 89-90 | Improving Wild Encounters and Customizing Map Area Inspector
