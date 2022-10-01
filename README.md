@@ -55,12 +55,6 @@
 |Episode 76     | Bug Fixes in Evolution & Level Up                                                                                                     |
 |Episode 77     | Healing Pokemon                                                                                                                       |
 |Episode 78     | Dialogue Choices                                                                                                                      |
-|Episode 79     | Shops                                                                                                                                 |
-|Episode 80     | Shops 2 - Money                                                                                                                       |
-|Episode 81     | Shops 3 - Sell Muliple Items                                                                                                          |
-|Episode 82     | Shops 4 - Shop UI                                                                                                                     |
-|Episode 83     | Shops 5 - Buying Items                                                                                                                |
-|Episode 84     | Completing Shop System                                                                                                                |
-|Episode 85     | Audio System - Adding Music                                                                                                           |
-|Episode 86     | Adding Sound Effects                                                                                                                  |
-|Episode 87     | Adding Sound Effects 2                                                                                                                |
+|Episodes 79-84 | Shop System - Buying and Selling with UI                                                                                              |
+|Episodes 85-87 | Audio System - Music and Sound Effects                                                                                                |
+|Episodes 89-90 | Improving Wild Encounters and Customizing Map Area Inspector
